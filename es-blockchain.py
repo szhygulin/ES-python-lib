@@ -225,6 +225,6 @@ if __name__ == '__main__':
     #trade("test2", "test1", 1, 1)
     print("\n")
     print(getUserBalances("test2"))
-    burnEnergy(test2, 2)
+    burnEnergy("test2", 2)
     print(getUserBalances("test2"))
-    generateEnergy(test2, 20)
+    generateEnergy("test2", 20)
