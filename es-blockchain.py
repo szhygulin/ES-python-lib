@@ -1,6 +1,5 @@
 import docker
 import time
-import re
 
 client = docker.from_env()
 containers = client.containers.list(all)
@@ -176,17 +175,11 @@ def getUserBalances(user_id, epoch=current_epoch):
                 print(command1)
                 print(command2)
                 res = x.exec_run(command1)
-                usd_output = str(res.output)
+                usd_output = str(res.output).split("\\n")
                 res = x.exec_run(command2)
-                energy_output = str(res.output)
-                print(energy_output.split("\\n"))
-                #regex = re.compile('\\n.*\\n')
-                #usd_matches = [string for string in usd_output if re.match(regex, string)]
-                #energy_matches = [string for string in energy_output if re.match(regex, string)]
-                print(usd_matches, "\n")
-                print(energy_matches, "\n")
-                usd_balance = 0
-                energy_balance = 0
+                energy_output = str(res.output).split("\\n")
+                usd_balance = int(usd_output[-2])
+                energy_balance = int(energy_output[-2])
                 return [usd_balance, energy_balance]
             else:
                 return balances[epoch][user_id]
