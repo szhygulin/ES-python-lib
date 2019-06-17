@@ -80,7 +80,7 @@ def test():
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc"""
+            command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
