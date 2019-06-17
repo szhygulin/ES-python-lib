@@ -179,6 +179,7 @@ def getUserBalances(user_id, epoch=current_epoch):
                 usd_output = res.output
                 res = x.exec_run(command2)
                 energy_output = res.output
+                print(res.output.type)
                 regex = re.compile('\n.*\n\'')
                 usd_matches = [string for string in usd_output if re.match(regex, string)]
                 energy_matches = [string for string in energy_output if re.match(regex, string)]
@@ -197,4 +198,4 @@ if __name__ == '__main__':
     setUserBalance("test2", "EnergyAsset", 10)
     trade("test2", "test1", 1, 1)
     print("\n")
-    print(getUserBalances("user1"))
+    print(getUserBalances("test1"))
