@@ -3,6 +3,8 @@ import time
 
 client = docker.from_env()
 containers = client.containers.list(all)
+current_epoch = 0
+balances = []
 
 def initiate():
     for x in containers:
@@ -137,9 +139,26 @@ def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
             print("\n")
             print(res)
 
+def getUserBalances(user_id, epoch=current_epoch):
+    for x in containers:
+        if x.name == "cli":
+            if epoch == current_epoch:
+                command1 = """peer chaincode query -n USDAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C myc"""
+                command2 = """peer chaincode query -n EnergyAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C myc"""
+                print(command1)
+                print(command2)
+                res = x.exec_run(command1)
+                usd_balance = res.output
+                res = x.exec_run(command2)
+                energy_balance = res.output
+                return [usd_balance, energy_balance]
+            else:
+                return balances[epoch][user_id]
+
 
 if __name__ == '__main__':
     #initiate()
     setUserBalance("user1", "USDAsset", 10)
     setUserBalance("user2", "EnergyAsset", 10)
     trade("user2", "user1", 1, 1)
+    print(getUserBalances("user1"))
