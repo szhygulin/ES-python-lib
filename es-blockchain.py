@@ -106,11 +106,20 @@ def test():
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
         if x.name == "cli":
-            command = """peer chaincode invoke -n""" + asset_name + """ -c '{"Args":["set", \""""
-            + user_id + """\", \""""+str(amount)+"""\"]}' -C myc"""
+            a1 = """peer chaincode invoke -n"""
+            a2 = asset_name + """ -c '{"Args":["set", \""""
+            a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
+            command=a1+a2+a3
+            print(command)
             res = x.exec_run(command)
             print("\n")
             print(res)
+
+#def transferAsset(sender_id, recipient_id, asset_name, amount):
+#    for x in containers:
+#        if x.name == "cli":
+#            command = """peer chaincode invoke -n""" + asset_name + """ -c '{"Args":["send", \""""
+#            + sender_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
 
 
 if __name__ == '__main__':
