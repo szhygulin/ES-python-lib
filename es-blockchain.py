@@ -142,4 +142,4 @@ if __name__ == '__main__':
     #initiate()
     setUserBalance("user1", "USDAsset", 10)
     setUserBalance("user2", "EnergyAsset", 10)
-    trade("user2", 1, "user1", 1)
+    trade("user2", "user1", 1, 1)
