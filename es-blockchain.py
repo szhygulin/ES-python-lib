@@ -126,8 +126,20 @@ def transferAsset(sender_id, recipient_id, asset_name, amount):
             print("\n")
             print(res)
 
+def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
+    for x in containers:
+        if x.name == "cli":
+            a1 = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
+            a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C myc"""
+            command = a1 + a2
+            print(command)
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
+
 
 if __name__ == '__main__':
     #initiate()
-    setUserBalance("user", "USDAsset", 10)
-    transferAsset("user", "user2", "USDAsset", 2)
+    setUserBalance("user1", "USDAsset", 10)
+    setUserBalance("user2", "EnergyAsset", 10)
+    trade("user2", 1, "user1", 1)
