@@ -139,6 +139,7 @@ def setUserBalance(user_id, asset_name, amount=0):
             command = a1 + a2 + a3
             print(command)
             res = x.exec_run(command)
+            time.sleep(2*sleep_time)
             print("\n")
             print(res)
 
