@@ -109,10 +109,10 @@ def test():
 def small_test():
     for x in containers:
         if x.name == "cli":
-            command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
-            res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
+            #res = x.exec_run(command)
+            #print("\n")
+            #print(res)
             command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
             res = x.exec_run(command)
             print("\n")
@@ -162,7 +162,7 @@ def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
             print(command)
             res = x.exec_run(command)
             print("\n")
-            time.sleep(sleep_time)
+            time.sleep(2*sleep_time)
             print(res)
 
 def getUserBalances(user_id, epoch=current_epoch):
