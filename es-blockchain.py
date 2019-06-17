@@ -106,22 +106,28 @@ def test():
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
         if x.name == "cli":
-            a1 = """peer chaincode invoke -n"""
+            a1 = """peer chaincode invoke -n """
             a2 = asset_name + """ -c '{"Args":["set", \""""
             a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
-            command=a1+a2+a3
+            command = a1 + a2 + a3
             print(command)
             res = x.exec_run(command)
             print("\n")
             print(res)
 
-#def transferAsset(sender_id, recipient_id, asset_name, amount):
-#    for x in containers:
-#        if x.name == "cli":
-#            command = """peer chaincode invoke -n""" + asset_name + """ -c '{"Args":["send", \""""
-#            + sender_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
+def transferAsset(sender_id, recipient_id, asset_name, amount):
+    for x in containers:
+        if x.name == "cli":
+            a1 = """peer chaincode invoke -n """ + asset_name + """ -c '{"Args":["send", \""""
+            a2 = sender_id + """\", \"""" + recipient_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
+            command = a1 + a2
+            print(command)
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
 
 
 if __name__ == '__main__':
     #initiate()
     setUserBalance("user", "USDAsset", 10)
+    transferAsset("user", "user2", USDAsset, 2)
