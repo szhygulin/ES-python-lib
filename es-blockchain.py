@@ -137,6 +137,7 @@ def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
             print(command)
             res = x.exec_run(command)
             print("\n")
+            time.sleep(5)
             print(res)
 
 def getUserBalances(user_id, epoch=current_epoch):
