@@ -72,21 +72,29 @@ def test():
     containers = client.containers.list(all)
     for x in containers:
         if x.name == "cli":
+            command = """peer chaincode invoke -n USDAsset -c '{"Args":["set", "test1", "10"]}' -C myc"""
+            res=x.exec_run(command)
+            print("\n")
+            print(res)
+            command = """peer chaincode invoke -n EnergyAsset -c '{"Args":["set", "test2", "10"]}' -C myc"""
+            res=x.exec_run(command)
+            print("\n")
+            print(res)
             command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","a"]}' -C myc"""
+            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","b"]}' -C myc"""
+            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","a"]}' -C myc"""
+            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
             res=x.exec_run(command)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","b"]}' -C myc"""
+            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
