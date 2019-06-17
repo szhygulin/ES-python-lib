@@ -66,27 +66,27 @@ def initiate():
             print(res)
             print("Exchange instantiated")
             ## Test
-            command = """sh -c '''peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc''' """
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","a"]}' -C myc''' """
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","b"]}' -C myc''' """
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","a"]}' -C myc''' """
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","b"]}' -C myc''' """
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            print("Test successful")
+            #command = """sh -c '''peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc''' """
+            #res=x.exec_run(command)
+            #print("\n")
+            #print(res)
+            #command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","a"]}' -C myc''' """
+            #res=x.exec_run(command)
+            #print("\n")
+            #print(res)
+            #command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","b"]}' -C myc''' """
+            #res=x.exec_run(command)
+            #print("\n")
+            #print(res)
+            #command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","a"]}' -C myc''' """
+            #res=x.exec_run(command)
+            #print("\n")
+            #print(res)
+            #command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","b"]}' -C myc''' """
+            #res=x.exec_run(command)
+            #print("\n")
+            #print(res)
+            #print("Test successful")
 
 if __name__ == '__main__':
     initiate()
