@@ -182,6 +182,10 @@ if __name__ == '__main__':
     #initiate()
     setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "EnergyAsset", 10)
+    command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
+    res = x.exec_run(command)
+    print("\n")
+    print(res)
     trade("test2", "test1", 1, 1)
     print("\n")
     small_test()
