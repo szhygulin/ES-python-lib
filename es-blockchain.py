@@ -94,6 +94,8 @@ def test():
             print(res)
             command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
             res=x.exec_run(command)
+            print("\n")
+            print(res)
             command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
@@ -101,5 +103,5 @@ def test():
             print("Test successful")
 
 if __name__ == '__main__':
-    initiate()
+    #initiate()
     test()
