@@ -176,9 +176,9 @@ def getUserBalances(user_id, epoch=current_epoch):
                 print(command1)
                 print(command2)
                 res = x.exec_run(command1)
-                usd_output = res.output
+                usd_output = str(res.output)
                 res = x.exec_run(command2)
-                energy_output = res.output
+                energy_output = str(res.output)
                 print(res.output.type)
                 regex = re.compile('\n.*\n\'')
                 usd_matches = [string for string in usd_output if re.match(regex, string)]
