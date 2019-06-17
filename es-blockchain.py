@@ -6,7 +6,7 @@ def initiate():
     containers = client.containers.list(all)
     for x in containers:
         if x.name == "chaincode":
-            command = ["sh -c", "go build"]
+            command = """sh -c "go build" """
             res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
             print("\n")
             print(res)
