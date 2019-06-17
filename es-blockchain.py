@@ -106,6 +106,24 @@ def test():
             print(res)
             print("Test successful")
 
+def small_test():
+    command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
+    res = x.exec_run(command)
+    print("\n")
+    print(res)
+    command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
+    res = x.exec_run(command)
+    print("\n")
+    print(res)
+    command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
+    res = x.exec_run(command)
+    print("\n")
+    print(res)
+    command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
+    res = x.exec_run(command)
+    print("\n")
+    print(res)
+
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
         if x.name == "cli":
@@ -164,4 +182,5 @@ if __name__ == '__main__':
     setUserBalance("user2", "EnergyAsset", 10)
     trade("user2", "user1", 1, 1)
     print("\n")
-    print(getUserBalances("user1"))
+    small_test()
+    #print(getUserBalances("user1"))
