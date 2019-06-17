@@ -175,20 +175,56 @@ def getUserBalances(user_id, epoch=current_epoch):
                 print(command1)
                 print(command2)
                 res = x.exec_run(command1)
-                usd_output = str(res.output).split("\\n")
+                if res.code != 0:
+                    usd_balance = 0
+                else:
+                    usd_output = str(res.output).split("\\n")
+                    usd_balance = int(usd_output[-2])
                 res = x.exec_run(command2)
-                energy_output = str(res.output).split("\\n")
-                usd_balance = int(usd_output[-2])
-                energy_balance = int(energy_output[-2])
+                if res.code != 0:
+                    energy_balance = 0
+                else:
+                    energy_output = str(res.output).split("\\n")
+                    energy_balance = int(energy_output[-2])
                 return [usd_balance, energy_balance]
             else:
                 return balances[epoch][user_id]
 
+def burnEnergy(user_id, amount):
+    for x in containers:
+        if x.name == "cli":
+            a1 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["burn", \"""" + user_id + """\", \""""
+            a2 = str(amount) + """\"]}' -C myc"""
+            command = a1 + a2
+            print(command)
+            res = x.exec_run(command)
+            print("\n")
+            time.sleep(2 * sleep_time)
+            print(res)
+
+def generateEnergy(user_id, amount):
+    for x in containers:
+        if x.name == "cli":
+            a1 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["generate", \"""" + user_id + """\", \""""
+            a2 = str(amount) + """\"]}' -C myc"""
+            command = a1 + a2
+            print(command)
+            res = x.exec_run(command)
+            print("\n")
+            time.sleep(2 * sleep_time)
+            print(res)
+
+def nextEpoch():
+    current_epoch += 1
+    balances.append({})
 
 if __name__ == '__main__':
-    #initiate()
+    initiate()
     #setUserBalance("test1", "USDAsset", 10)
-    #setUserBalance("test2", "EnergyAsset", 10)
+    setUserBalance("test2", "EnergyAsset", 10)
     #trade("test2", "test1", 1, 1)
     print("\n")
-    print(getUserBalances("test1"))
+    print(getUserBalances("test2"))
+    burnEnergy(test2, 2)
+    print(getUserBalances("test2"))
+    generateEnergy(test2, 20)
