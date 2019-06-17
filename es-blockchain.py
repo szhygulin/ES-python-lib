@@ -130,4 +130,4 @@ def transferAsset(sender_id, recipient_id, asset_name, amount):
 if __name__ == '__main__':
     #initiate()
     setUserBalance("user", "USDAsset", 10)
-    transferAsset("user", "user2", USDAsset, 2)
+    transferAsset("user", "user2", "USDAsset", 2)
