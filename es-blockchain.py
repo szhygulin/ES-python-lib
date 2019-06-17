@@ -5,6 +5,7 @@ client = docker.from_env()
 containers = client.containers.list(all)
 current_epoch = 0
 balances = []
+sleep_time = 5
 
 def initiate():
     for x in containers:
@@ -67,7 +68,7 @@ def initiate():
             res = x.exec_run(command)
             print("\n")
             print(res)
-            time.sleep(5)
+            time.sleep(sleep_time)
             print("Exchange instantiated")
 
 def test():
@@ -80,13 +81,13 @@ def test():
             command = """peer chaincode invoke -n EnergyAsset -c '{"Args":["set", "test2", "10"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
-            time.sleep(5)
+            time.sleep(sleep_time)
             print(res)
             command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
-            time.sleep(5)
+            time.sleep(sleep_time)
             command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
@@ -137,7 +138,7 @@ def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
             print(command)
             res = x.exec_run(command)
             print("\n")
-            time.sleep(5)
+            time.sleep(sleep_time)
             print(res)
 
 def getUserBalances(user_id, epoch=current_epoch):
