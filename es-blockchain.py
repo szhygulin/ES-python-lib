@@ -107,22 +107,24 @@ def test():
             print("Test successful")
 
 def small_test():
-    command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
-    res = x.exec_run(command)
-    print("\n")
-    print(res)
-    command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
-    res = x.exec_run(command)
-    print("\n")
-    print(res)
-    command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
-    res = x.exec_run(command)
-    print("\n")
-    print(res)
-    command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
-    res = x.exec_run(command)
-    print("\n")
-    print(res)
+    for x in containers:
+        if x.name == "cli":
+            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
+            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
+            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
+            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
 
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
