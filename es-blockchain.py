@@ -79,11 +79,13 @@ def test():
             command = """peer chaincode invoke -n EnergyAsset -c '{"Args":["set", "test2", "10"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
+            time.sleep(5)
             print(res)
             command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
+            time.sleep(5)
             command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
