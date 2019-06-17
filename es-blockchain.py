@@ -42,7 +42,7 @@ def initiate():
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode instantiate -n USDAsset -v 0 -c '{\"Args\":[\"a\",\"10\"]}' -C myc" """
+            command = """sh -c '''peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":["a","10"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
@@ -51,7 +51,7 @@ def initiate():
             res = x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode instantiate -n EnergyAsset -v 0 -c '{\"Args\":[\"b\",\"10\"]}' -C myc" """
+            command = """sh -c '''peer chaincode instantiate -n EnergyAsset -v 0 -c '{"Args":["b","10"]}' -C myc''' """
             res = x.exec_run(command)
             print("\n")
             print(res)
@@ -60,29 +60,29 @@ def initiate():
             res = x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode instantiate -n USDAsset -v 0 -c '{\"Args\":[]}' -C myc" """
+            command = """sh -c '''peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":[]}' -C myc''' """
             res = x.exec_run(command)
             print("\n")
             print(res)
             print("Exchange instantiated")
             ## Test
-            command = """sh -c "peer chaincode invoke -n Exchange -c '{\"Args\":[\"exchange\", \"a\", \"1\", \"b\", \"1\"]}' -C myc" """
+            command = """sh -c '''peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode query -n USDAsset -c '{\"Args\":[\"query\",\"a\"]}' -C myc" """
+            command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","a"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode query -n USDAsset -c '{\"Args\":[\"query\",\"b\"]}' -C myc" """
+            command = """sh -c '''peer chaincode query -n USDAsset -c '{"Args":["query","b"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode query -n EnergyAsset -c '{\"Args\":[\"query\",\"a\"]}' -C myc" """
+            command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","a"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c "peer chaincode query -n EnergyAsset -c '{\"Args\":[\"query\",\"b\"]}' -C myc" """
+            command = """sh -c '''peer chaincode query -n EnergyAsset -c '{"Args":["query","b"]}' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
