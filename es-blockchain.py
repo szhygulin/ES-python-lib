@@ -42,7 +42,7 @@ def initiate():
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """sh -c '''peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":["a","10"]}' -C myc''' """
+            command = """sh -c '''peer chaincode instantiate -n USDAsset -v 0 -c \'{\"Args\":[\"a\",\"10\"]}\' -C myc''' """
             res=x.exec_run(command)
             print("\n")
             print(res)
