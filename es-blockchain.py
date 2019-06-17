@@ -64,6 +64,7 @@ def initiate():
             res = x.exec_run(command)
             print("\n")
             print(res)
+            time.sleep(5)
             print("Exchange instantiated")
             ## Test
             command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc"""
