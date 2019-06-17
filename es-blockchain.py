@@ -2,9 +2,9 @@ import docker
 import time
 
 client = docker.from_env()
+containers = client.containers.list(all)
 
 def initiate():
-    containers = client.containers.list(all)
     for x in containers:
         if x.name == "chaincode":
             command = """sh -c '''go build''' """
@@ -69,7 +69,6 @@ def initiate():
             print("Exchange instantiated")
 
 def test():
-    containers = client.containers.list(all)
     for x in containers:
         if x.name == "cli":
             command = """peer chaincode invoke -n USDAsset -c '{"Args":["set", "test1", "10"]}' -C myc"""
@@ -104,6 +103,16 @@ def test():
             print(res)
             print("Test successful")
 
+def setUserBalance(user_id, asset_name, amount=0):
+    for x in containers:
+        if x.name == "cli":
+            command = """peer chaincode invoke -n""" + asset_name + """ -c '{"Args":["set", \""""
+            + user_id + """\", \""""+str(amount)+"""\"]}' -C myc"""
+            res = x.exec_run(command)
+            print("\n")
+            print(res)
+
+
 if __name__ == '__main__':
     initiate()
-    test()
+    setUserBalance("user", "USDAsset", 10)
