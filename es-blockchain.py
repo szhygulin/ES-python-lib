@@ -38,16 +38,16 @@ def initiate():
             print("ES_exchange initiated")
     for x in containers:
         if x.name == "cli":
-            command = """sh -c "peer chaincode install -p chaincodedev/chaincode/es-dollar -n USDAsset -v 0" """
+            command = """peer chaincode install -p chaincodedev/chaincode/es-dollar -n USDAsset -v 0"""
             res=x.exec_run(command)
             print("\n")
             print(res)
-            command = """peer chaincode instantiate -n USDAsset -v 0 -c \'{\"Args\":[\"a\",\"10\"]}\' -C myc"""
+            command = """peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":["a","10"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
             print(res)
             print("USD asset instantiated")
-            command = """sh -c "peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0" """
+            command = """peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0" """
             res = x.exec_run(command)
             print("\n")
             print(res)
@@ -56,7 +56,7 @@ def initiate():
             print("\n")
             print(res)
             print("Energy asset instantiated")
-            command = """sh -c "peer chaincode install -p chaincodedev/chaincode/es-exchange -n Exchange -v 0" """
+            command = """peer chaincode install -p chaincodedev/chaincode/es-exchange -n Exchange -v 0"""
             res = x.exec_run(command)
             print("\n")
             print(res)
