@@ -47,7 +47,7 @@ def initiate():
             print("\n")
             print(res)
             print("USD asset instantiated")
-            command = """peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0" """
+            command = """peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0"""
             res = x.exec_run(command)
             print("\n")
             print(res)
