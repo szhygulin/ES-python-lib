@@ -1,8 +1,9 @@
 import docker
 import time
 
+client = docker.from_env()
+
 def initiate():
-    client = docker.from_env()
     containers = client.containers.list(all)
     for x in containers:
         if x.name == "chaincode":
@@ -66,7 +67,11 @@ def initiate():
             print(res)
             time.sleep(5)
             print("Exchange instantiated")
-            ## Test
+
+def test():
+    containers = client.containers.list(all)
+    for x in containers:
+        if x.name == "cli":
             command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "a", "1", "b", "1"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
@@ -81,8 +86,6 @@ def initiate():
             print(res)
             command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","a"]}' -C myc"""
             res=x.exec_run(command)
-            print("\n")
-            print(res)
             command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","b"]}' -C myc"""
             res=x.exec_run(command)
             print("\n")
@@ -91,3 +94,4 @@ def initiate():
 
 if __name__ == '__main__':
     initiate()
+    test()
