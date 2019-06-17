@@ -123,5 +123,5 @@ def setUserBalance(user_id, asset_name, amount=0):
 
 
 if __name__ == '__main__':
-    initiate()
+    #initiate()
     setUserBalance("user", "USDAsset", 10)
