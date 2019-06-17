@@ -175,13 +175,13 @@ def getUserBalances(user_id, epoch=current_epoch):
                 print(command1)
                 print(command2)
                 res = x.exec_run(command1)
-                if res.code != 0:
+                if res.exit_code != 0:
                     usd_balance = 0
                 else:
                     usd_output = str(res.output).split("\\n")
                     usd_balance = int(usd_output[-2])
                 res = x.exec_run(command2)
-                if res.code != 0:
+                if res.exit_code != 0:
                     energy_balance = 0
                 else:
                     energy_output = str(res.output).split("\\n")
@@ -219,7 +219,7 @@ def nextEpoch():
     balances.append({})
 
 if __name__ == '__main__':
-    initiate()
+    #initiate()
     #setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "EnergyAsset", 10)
     #trade("test2", "test1", 1, 1)
