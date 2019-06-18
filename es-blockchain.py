@@ -233,16 +233,19 @@ def getTotalBalances(epoch=current_epoch):
                     usd_ids = usd_ids_str.split("""\\\\\"""")
                     del usd_ids[::2]
                     print(usd_ids)
-                    return usd_ids
-                #print(usd_ids)
-                #res = x.exec_run(command2)
-                #if res.exit_code != 0:
-                #    energy_balance = 0
-                #else:
-                #    energy_output = str(res.output).split("\\n")
-                #    energy_balance = int(energy_output[-2])
-                return 0
-                #return [usd_balance, energy_balance]
+                res = x.exec_run(command2)
+                print(res.output)
+                if res.exit_code != 0:
+                    energy_ids = []
+                else:
+                    energy_ids_str = re.findall(regex, str(res.output))[0]
+                    energy_ids = energy_ids_str.split("""\\\\\"""")
+                    del energy_ids[::2]
+                    print(energy_ids)
+                balances = {}
+                for x in usd_ids or x in energy_ids:
+                    balances[x] = getUserBalances(x)
+                return balances
             else:
                 return balances[epoch]
 
