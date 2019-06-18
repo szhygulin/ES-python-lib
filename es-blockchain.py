@@ -223,7 +223,7 @@ def getTotalBalances(epoch=current_epoch):
                 command2 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["keys"]}' -C myc"""
                 print(command1)
                 print(command2)
-                regex = """payload:"\[\\\\".*\\\\\"]" \\n'"""
+                regex = """payload.*"""
                 res = x.exec_run(command1)
                 print(res.output)
                 if res.exit_code != 0:
@@ -231,7 +231,7 @@ def getTotalBalances(epoch=current_epoch):
                 else:
                     usd_ids_str = re.findall(regex, str(res.output))
                     print(usd_ids_str)
-                    usd_ids = list(usd_ids_str)
+                    #usd_ids = list(usd_ids_str)
                 print(usd_ids)
                 #res = x.exec_run(command2)
                 #if res.exit_code != 0:
