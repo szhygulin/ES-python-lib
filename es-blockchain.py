@@ -214,6 +214,20 @@ def generateEnergy(user_id, amount):
             time.sleep(2 * sleep_time)
             print(res)
 
+def getTotalBalances(epoch=current):
+    for x in containers:
+        if x.name == "cli":
+            if epoch == current_epoch:
+                command1 = """peer chaincode invoke -n USDAsset -c '{"Args":["keys"]}' -C myc"""
+                command2 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["keys"]}' -C myc"""
+                print(command1)
+                print(command2)
+                res = x.exec_run(command1)
+                print(res, "\n")
+            else:
+                return balances[epoch]
+
+
 def nextEpoch():
     current_epoch += 1
     balances.append({})
