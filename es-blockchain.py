@@ -214,7 +214,7 @@ def generateEnergy(user_id, amount):
             time.sleep(2 * sleep_time)
             print(res)
 
-def getTotalBalances(epoch=current):
+def getTotalBalances(epoch=current_epoch):
     for x in containers:
         if x.name == "cli":
             if epoch == current_epoch:
