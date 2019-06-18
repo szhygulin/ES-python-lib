@@ -224,6 +224,7 @@ def getTotalBalances(epoch=current):
                 print(command2)
                 res = x.exec_run(command1)
                 print(res, "\n")
+                return 0
             else:
                 return balances[epoch]
 
@@ -233,7 +234,7 @@ def nextEpoch():
     balances.append({})
 
 if __name__ == '__main__':
-    #initiate()
+    initiate()
     #setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "EnergyAsset", 10)
     #trade("test2", "test1", 1, 1)
@@ -242,3 +243,4 @@ if __name__ == '__main__':
     burnEnergy("test2", 2)
     print(getUserBalances("test2"))
     generateEnergy("test2", 20)
+    print(getTotalBalances())
