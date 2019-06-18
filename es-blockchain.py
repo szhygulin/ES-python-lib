@@ -1,5 +1,6 @@
 import docker
 import time
+import re
 
 client = docker.from_env()
 containers = client.containers.list(all)
@@ -222,9 +223,22 @@ def getTotalBalances(epoch=current_epoch):
                 command2 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["keys"]}' -C myc"""
                 print(command1)
                 print(command2)
+                regex = """payload:".*" \\n'"""
                 res = x.exec_run(command1)
-                print(res, "\n")
+                if res.exit_code != 0:
+                    usd_ids = []
+                else:
+                    usd_ids_str = re.findall(regex, str(res.output))[]
+                    usd_ids = list(usd_ids_str)
+                print(usd_ids)
+                #res = x.exec_run(command2)
+                #if res.exit_code != 0:
+                #    energy_balance = 0
+                #else:
+                #    energy_output = str(res.output).split("\\n")
+                #    energy_balance = int(energy_output[-2])
                 return 0
+                #return [usd_balance, energy_balance]
             else:
                 return balances[epoch]
 
