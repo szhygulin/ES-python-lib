@@ -230,7 +230,7 @@ def getTotalBalances(epoch=current_epoch):
                     usd_ids = []
                 else:
                     usd_ids_str = re.findall(regex, str(res.output))[0]
-                    usd_ids_str = usd_ids_str.split("""\"""")
+                    usd_ids_str = usd_ids_str.split("""\\\\\"""")
                     print(usd_ids_str)
                 #print(usd_ids)
                 #res = x.exec_run(command2)
