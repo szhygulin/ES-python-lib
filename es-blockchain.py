@@ -225,6 +225,7 @@ def getTotalBalances(epoch=current_epoch):
                 print(command2)
                 regex = """payload:".*" \\n'"""
                 res = x.exec_run(command1)
+                print(res)
                 if res.exit_code != 0:
                     usd_ids = []
                 else:
