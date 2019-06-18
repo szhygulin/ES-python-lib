@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/es-blockchain.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="232" column="38" selection-start-line="232" selection-start-column="38" selection-end-line="232" selection-end-column="38" />
+            <state relative-caret-position="212">
+              <caret line="234" column="20" selection-start-line="234" selection-start-column="20" selection-end-line="234" selection-end-column="20" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -133,6 +133,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="61" y="47" width="1295" height="701" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15801887" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -156,8 +157,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/es-blockchain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="232" column="38" selection-start-line="232" selection-start-column="38" selection-end-line="232" selection-end-column="38" />
+        <state relative-caret-position="212">
+          <caret line="234" column="20" selection-start-line="234" selection-start-column="20" selection-end-line="234" selection-end-column="20" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
