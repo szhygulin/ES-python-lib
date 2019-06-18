@@ -228,7 +228,7 @@ def getTotalBalances(epoch=current_epoch):
                 if res.exit_code != 0:
                     usd_ids = []
                 else:
-                    usd_ids_str = re.findall(regex, str(res.output))[]
+                    usd_ids_str = re.findall(regex, str(res.output))[0]
                     usd_ids = list(usd_ids_str)
                 print(usd_ids)
                 #res = x.exec_run(command2)
