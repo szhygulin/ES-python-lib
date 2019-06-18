@@ -7,6 +7,7 @@ containers = client.containers.list(all)
 current_epoch = 0
 balances = []
 sleep_time = 5
+central_company_price = [0]
 
 def initiate():
     for x in containers:
@@ -225,7 +226,7 @@ def getTotalBalances(epoch=current_epoch):
                 print(command2)
                 regex = """result: status:200 payload:\".*\""""
                 res = x.exec_run(command1)
-                print(res.output)
+                #print(res.output)
                 if res.exit_code != 0:
                     usd_ids = []
                 else:
@@ -234,7 +235,7 @@ def getTotalBalances(epoch=current_epoch):
                     del usd_ids[::2]
                     print(usd_ids)
                 res = x.exec_run(command2)
-                print(res.output)
+                #print(res.output)
                 if res.exit_code != 0:
                     energy_ids = []
                 else:
@@ -249,10 +250,15 @@ def getTotalBalances(epoch=current_epoch):
             else:
                 return balances[epoch]
 
+def getCentralCompanyPrice(epoch=current_epoch):
+    return central_company_price[epoch]
+
+def setPriceLevel(price):
+    central_company_price[current_epoch] = price
 
 def nextEpoch():
+    balances.append(getTotalBalances())
     current_epoch += 1
-    balances.append({})
 
 if __name__ == '__main__':
     #initiate()
@@ -267,3 +273,4 @@ if __name__ == '__main__':
     #print(getUserBalances("test2"))
     #generateEnergy("test2", 20)
     print(getTotalBalances())
+    nextEpoch()
