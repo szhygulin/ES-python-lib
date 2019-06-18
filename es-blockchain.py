@@ -254,6 +254,8 @@ def nextEpoch():
 if __name__ == '__main__':
     #initiate()
     setUserBalance("test1", "USDAsset", 10)
+    setUserBalance("test2", "USDAsset", 10)
+    setUserBalance("test3", "USDAsset", 10)
     setUserBalance("test2", "EnergyAsset", 10)
     #trade("test2", "test1", 1, 1)
     print("\n")
