@@ -200,6 +200,7 @@ def getTotalBalances(epoch=current_epoch):
                     balances_return[x] = getUserBalances(x)
                 return balances_return
             else:
+                print("trigger", epoch)
                 return balances[epoch]
 
 def getCentralCompanyPrice(epoch=current_epoch):
@@ -274,7 +275,7 @@ def test():
     print(getTotalBalances(0))
     openOrder("test2", 4, 4)
     openOrder("test1", 3, 6)
-    print(open_orders)
+    print("open orders", open_orders)
     buyWithMarketOrder("test3", 8)
     print("current_epoch", current_epoch)
     print("balances", balances)
@@ -285,5 +286,5 @@ def test():
 
 
 if __name__ == '__main__':
-    initiate()
+    #initiate()
     test()
