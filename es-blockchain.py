@@ -261,14 +261,14 @@ class blockchain:
 
     def test(self):
         self.setPriceLevel(1)
-        print(self.getUserBalances("centralCompany"))
+        print(self.getUserBalances("centralCompany", epoch=self.current_epoch))
         self.setUserBalance("test1", "USDAsset", 10)
         self.setUserBalance("test2", "USDAsset", 10)
         self.setUserBalance("test3", "USDAsset", 100)
         self.setUserBalance("test2", "EnergyAsset", 10)
-        print(self.getTotalBalances())
+        print(self.getTotalBalances(epoch=self.current_epoch))
         self.transferAsset("test2", "test1", "EnergyAsset", 3)
-        print(self.getTotalBalances())
+        print(self.getTotalBalances(epoch=self.current_epoch))
         self.nextEpoch()
         print("current_epoch", self.current_epoch)
         self.setPriceLevel(2)
@@ -279,9 +279,9 @@ class blockchain:
         self.buyWithMarketOrder("test3", 8)
         print("current_epoch", self.current_epoch)
         print("balances", self.balances)
-        print(self.getTotalBalances())
+        print(self.getTotalBalances(epoch=self.current_epoch))
         self.buyFromCentralCompany("test3", 3)
-        print(self.getTotalBalances())
+        print(self.getTotalBalances(epoch=self.current_epoch))
 
 if __name__ == '__main__':
     bch=blockchain()
