@@ -227,7 +227,7 @@ def buyWithMarketOrder(user_id, energy_amount):
             amount = min(energy_amount, open_orders[sorted_prices[0][1]][0])
             energy_amount -= amount
             trade(sorted_prices[0][1], user_id, amount, int(amount*sorted_prices[0][0]))
-            print(getTotalBalances())
+            #print(getTotalBalances())
             open_order_ene = open_orders[sorted_prices[0][1]][0]
             cancelOrder(sorted_prices[0][1])
             if amount < open_order_ene:
@@ -240,6 +240,7 @@ def buyWithMarketOrder(user_id, energy_amount):
                 p = sorted_prices[0][0]
         if energy_amount > 0:
             buyFromCentralCompany(user_id, energy_amount)
+    time.sleep(sleep_time*3)
 
 def nextEpoch():
     global current_epoch
@@ -254,10 +255,6 @@ def test():
     setUserBalance("test3", "USDAsset", 100)
     setUserBalance("test2", "EnergyAsset", 10)
     print(getTotalBalances())
-    trade("test2", "test1", 1, 1)
-    print(getTotalBalances())
-    generateEnergy("test2", 20)
-    burnEnergy("test2", 10)
     transferAsset("test2", "test1", "EnergyAsset", 3)
     print(getTotalBalances())
     nextEpoch()
@@ -268,6 +265,8 @@ def test():
     openOrder("test1", 3, 6)
     print(open_orders)
     buyWithMarketOrder("test3", 8)
+    print(getTotalBalances())
+    buyFromCentralCompany("test3", 3)
     print(getTotalBalances())
 
 
