@@ -8,6 +8,7 @@ current_epoch = 0
 balances = []
 sleep_time = 5
 central_company_price = [0]
+open_orders = {}
 
 def initiate():
     for x in containers:
@@ -72,65 +73,6 @@ def initiate():
             print(res)
             time.sleep(sleep_time)
             print("Exchange instantiated")
-
-def test():
-    for x in containers:
-        if x.name == "cli":
-            command = """peer chaincode invoke -n USDAsset -c '{"Args":["set", "test1", "10"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode invoke -n EnergyAsset -c '{"Args":["set", "test2", "10"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            time.sleep(sleep_time)
-            print(res)
-            command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            time.sleep(sleep_time)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
-            res=x.exec_run(command)
-            print("\n")
-            print(res)
-            print("Test successful")
-
-def small_test():
-    for x in containers:
-        if x.name == "cli":
-            #command = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", "test1", "1", "test2", "1"]}' -C myc"""
-            #res = x.exec_run(command)
-            #print("\n")
-            #print(res)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test1"]}' -C myc"""
-            res = x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n USDAsset -c '{"Args":["query","test2"]}' -C myc"""
-            res = x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test1"]}' -C myc"""
-            res = x.exec_run(command)
-            print("\n")
-            print(res)
-            command = """peer chaincode query -n EnergyAsset -c '{"Args":["query","test2"]}' -C myc"""
-            res = x.exec_run(command)
-            print("\n")
-            print(res)
 
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
@@ -243,9 +185,9 @@ def getTotalBalances(epoch=current_epoch):
                     energy_ids = energy_ids_str.split("""\\\\\"""")
                     del energy_ids[::2]
                     print(energy_ids)
-                balances = {}
+                balances_return = {}
                 for x in usd_ids or x in energy_ids:
-                    balances[x] = getUserBalances(x)
+                    balances_return[x] = getUserBalances(x)
                 return balances
             else:
                 return balances[epoch]
@@ -256,21 +198,66 @@ def getCentralCompanyPrice(epoch=current_epoch):
 def setPriceLevel(price):
     central_company_price[current_epoch] = price
 
+def openOrder(user_id, energy_amount, usd_amount):
+    open_orders[user_id] = [energy_amount, usd_amount]
+
+def cancelOrder(user_id):
+    del open_orders[user_id]
+
+def getOpenOrders():
+    return open_orders
+
+def buyFromCentralCompany(buyer_id, amount):
+    usd_amount = int(central_company_price[current_epoch]*amount)
+    trade("central_company", buyer_id, amount, usd_amount)
+    generateEnergy("central_company", amount)
+
+def buyWithMarketOrder(user_id, energy_amount):
+    prices = []
+    for x in open_orders:
+        prices.append(open_orders[x][0] / open_orders[x][1], x)
+    sorted_prices = sorted(prices, key=lambda y: y[0])
+    p = sorted_prices[0][0]
+    while p <= central_company_price[current_epoch] and energy_amount > 0:
+        amount = min(energy_amount, open_orders[sorted_prices[1]][0])
+        energy_amount =- amount
+        trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
+        cancelOrder(sorted_prices[0][1])
+        if amount < open_orders[sorted_prices[1]][0]:
+            ene_to_sell = open_orders[sorted_prices[1]][0] - amount
+            openOrder(sorted_prices[1], ene_to_sell, sorted_prices[0][0]*ene_to_sell)
+        del sorted_prices[0]
+        p = sorted_prices[0][0]
+    if energy_amount > 0:
+        buyFromCentralCompany(user_id, energy_amount)
+
 def nextEpoch():
     balances.append(getTotalBalances())
+    central_company_price.append(central_company_price[current_epoch])
     current_epoch += 1
 
-if __name__ == '__main__':
-    #initiate()
+def test():
+    setPriceLevel(1)
     setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "USDAsset", 10)
-    setUserBalance("test3", "USDAsset", 10)
+    setUserBalance("test3", "USDAsset", 100)
     setUserBalance("test2", "EnergyAsset", 10)
-    #trade("test2", "test1", 1, 1)
-    print("\n")
-    #print(getUserBalances("test2"))
-    #burnEnergy("test2", 2)
-    #print(getUserBalances("test2"))
-    #generateEnergy("test2", 20)
+    trade("test2", "test1", 1, 1)
+    print(getTotalBalances())
+    generateEnergy("test2", 20)
+    burnEnergy("test2", 10)
+    transferAsset("test2", "test1", "EnergyAsset", 3)
     print(getTotalBalances())
     nextEpoch()
+    setPriceLevel(2)
+    print(getTotalBalances(0))
+    openOrder("test2", 4, 4)
+    openOrder("test1", 3, 6)
+    buyWithMarketOrder("test3", 8)
+    print(getTotalBalances())
+
+
+
+if __name__ == '__main__':
+    initiate()
+    test()
