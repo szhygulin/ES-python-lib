@@ -265,6 +265,8 @@ def test():
     openOrder("test1", 3, 6)
     print(open_orders)
     buyWithMarketOrder("test3", 8)
+    print("current_epoch", current_epoch)
+    print("balances", balances)
     print(getTotalBalances())
     buyFromCentralCompany("test3", 3)
     print(getTotalBalances())
