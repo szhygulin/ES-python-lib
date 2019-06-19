@@ -283,6 +283,13 @@ class blockchain:
         self.buyFromCentralCompany("test3", 3)
         print(self.getTotalBalances(epoch=self.current_epoch))
 
+    def shutdown(self):
+        for x in self.containers:
+            x.kill()
+
+
+
 if __name__ == '__main__':
     bch=blockchain()
     bch.test()
+    bch.shutdown()
