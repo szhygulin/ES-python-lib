@@ -2,6 +2,12 @@ import docker
 import time
 import re
 
+global current_epoch
+global balances
+global sleep_time
+global central_company_price
+global open_orders
+
 client = docker.from_env()
 containers = client.containers.list(all)
 current_epoch = 0
