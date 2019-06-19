@@ -209,6 +209,7 @@ def getOpenOrders():
     return open_orders
 
 def buyFromCentralCompany(buyer_id, amount):
+    print("cc_price", central_company_price[current_epoch])
     usd_amount = int(central_company_price[current_epoch]*amount)
     trade("central_company", buyer_id, amount, usd_amount)
     generateEnergy("central_company", amount)
@@ -250,6 +251,7 @@ def nextEpoch():
 
 def test():
     setPriceLevel(1)
+    print(getTotalBalances())
     setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "USDAsset", 10)
     setUserBalance("test3", "USDAsset", 100)
@@ -274,5 +276,5 @@ def test():
 
 
 if __name__ == '__main__':
-    #initiate()
+    initiate()
     test()
