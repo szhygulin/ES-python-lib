@@ -6,7 +6,7 @@ client = docker.from_env()
 containers = client.containers.list(all)
 current_epoch = 0
 balances = []
-sleep_time = 1
+sleep_time = 2
 central_company_price = [0]
 open_orders = {}
 
