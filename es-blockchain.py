@@ -186,6 +186,7 @@ def getTotalBalances(epoch=current_epoch):
                     del energy_ids[::2]
                     #print(energy_ids)
                 balances_return = {}
+                print("usd_ids, energy_ids", usd_ids, energy_ids)
                 for x in usd_ids or x in energy_ids:
                     balances_return[x] = getUserBalances(x)
                 return balances_return
