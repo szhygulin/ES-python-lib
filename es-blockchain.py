@@ -260,7 +260,6 @@ def buyWithMarketOrder(user_id, energy_amount):
     time.sleep(sleep_time*3)
 
 def nextEpoch():
-    global current_epoch
     balances.append(getTotalBalances())
     central_company_price.append(central_company_price[current_epoch])
     current_epoch += 1
