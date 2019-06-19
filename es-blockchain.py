@@ -251,7 +251,7 @@ def nextEpoch():
 
 def test():
     setPriceLevel(1)
-    print(getTotalBalances())
+    print(getUserBalances("central_company"))
     setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "USDAsset", 10)
     setUserBalance("test3", "USDAsset", 100)
