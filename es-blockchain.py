@@ -4,6 +4,7 @@ import re
 
 client = docker.from_env()
 containers = client.containers.list(all)
+global current_epoch
 current_epoch = 0
 balances = []
 sleep_time = 5
@@ -15,62 +16,62 @@ def initiate():
         if x.name == "chaincode":
             command = """sh -c '''go build''' """
             res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             #time.sleep(10)
             command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
             res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             print("ES_dollar initiated")
             command = """sh -c "go build" """
             res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy")
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             #time.sleep(10)
             command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=EnergyAsset:0 ./es-energy" """
             res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy", detach=True)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             print("ES_energy initiated")
             command = """sh -c "go build" """
             res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange")
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             # time.sleep(10)
             command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
             res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             print("ES_exchange initiated")
     for x in containers:
         if x.name == "cli":
             command = """peer chaincode install -p chaincodedev/chaincode/es-dollar -n USDAsset -v 0"""
             res=x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             command = """peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":[]}' -C myc"""
             res=x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             print("USD asset instantiated")
             command = """peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0"""
             res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             command = """peer chaincode instantiate -n EnergyAsset -v 0 -c '{"Args":[]}' -C myc"""
             res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             print("Energy asset instantiated")
             command = """peer chaincode install -p chaincodedev/chaincode/es-exchange -n Exchange -v 0"""
             res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             command = """peer chaincode instantiate -n Exchange -v 0 -c '{"Args":[]}' -C myc"""
             res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
             time.sleep(sleep_time)
             print("Exchange instantiated")
 
@@ -84,8 +85,8 @@ def setUserBalance(user_id, asset_name, amount=0):
             print(command)
             res = x.exec_run(command)
             time.sleep(2*sleep_time)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
 
 def transferAsset(sender_id, recipient_id, asset_name, amount):
     for x in containers:
@@ -95,8 +96,8 @@ def transferAsset(sender_id, recipient_id, asset_name, amount):
             command = a1 + a2
             print(command)
             res = x.exec_run(command)
-            print("\n")
-            print(res)
+            #print("\n")
+            #print(res)
 
 def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
     for x in containers:
@@ -106,9 +107,9 @@ def trade(energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
             command = a1 + a2
             print(command)
             res = x.exec_run(command)
-            print("\n")
+            #print("\n")
             time.sleep(2*sleep_time)
-            print(res)
+            #print(res)
 
 def getUserBalances(user_id, epoch=current_epoch):
     for x in containers:
@@ -142,9 +143,9 @@ def burnEnergy(user_id, amount):
             command = a1 + a2
             print(command)
             res = x.exec_run(command)
-            print("\n")
+            #print("\n")
             time.sleep(2 * sleep_time)
-            print(res)
+            #print(res)
 
 def generateEnergy(user_id, amount):
     for x in containers:
@@ -154,9 +155,9 @@ def generateEnergy(user_id, amount):
             command = a1 + a2
             print(command)
             res = x.exec_run(command)
-            print("\n")
+            #print("\n")
             time.sleep(2 * sleep_time)
-            print(res)
+            #print(res)
 
 def getTotalBalances(epoch=current_epoch):
     for x in containers:
