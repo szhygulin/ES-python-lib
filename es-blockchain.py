@@ -219,6 +219,8 @@ def buyWithMarketOrder(user_id, energy_amount):
     sorted_prices = sorted(prices, key=lambda y: y[0])
     p = sorted_prices[0][0]
     while p <= central_company_price[current_epoch] and energy_amount > 0:
+        print("sorted prices[1]", sorted_prices[1])
+        print("open_orders[sorted_prices[1]]", open_orders[sorted_prices[1]])
         amount = min(energy_amount, open_orders[sorted_prices[1]][0])
         energy_amount -= amount
         trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
