@@ -222,9 +222,10 @@ def buyWithMarketOrder(user_id, energy_amount):
         amount = min(energy_amount, open_orders[sorted_prices[0][1]][0])
         energy_amount -= amount
         trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
+        open_order_ene = open_orders[sorted_prices[0][1]][0]
         cancelOrder(sorted_prices[0][1])
-        if amount < open_orders[sorted_prices[0][1]][0]:
-            ene_to_sell = open_orders[sorted_prices[0][1]][0] - amount
+        if amount < open_order_ene:
+            ene_to_sell = open_order_ene - amount
             openOrder(sorted_prices[1], ene_to_sell, sorted_prices[0][0]*ene_to_sell)
         del sorted_prices[0]
         p = sorted_prices[0][0]
