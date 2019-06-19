@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd7a835b-90c7-4092-ba10-add67ab5a506" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/es-blockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/es-blockchain.py" afterDir="false" />
-    </list>
+    <list default="true" id="fd7a835b-90c7-4092-ba10-add67ab5a506" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/es-blockchain.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="188" column="64" selection-start-line="188" selection-start-column="64" selection-end-line="188" selection-end-column="64" />
+            <state relative-caret-position="-508">
+              <caret line="188" column="17" selection-start-line="188" selection-start-column="17" selection-end-line="188" selection-end-column="17" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -161,8 +159,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/es-blockchain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="188" column="64" selection-start-line="188" selection-start-column="64" selection-end-line="188" selection-end-column="64" />
+        <state relative-caret-position="-508">
+          <caret line="188" column="17" selection-start-line="188" selection-start-column="17" selection-end-line="188" selection-end-column="17" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

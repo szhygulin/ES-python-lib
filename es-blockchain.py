@@ -219,7 +219,7 @@ def buyWithMarketOrder(user_id, energy_amount):
     else:
         prices = []
         for x in open_orders:
-            prices.append([open_orders[x][0] / open_orders[x][1], x])
+            prices.append([open_orders[x][1] / open_orders[x][0], x])
         sorted_prices = sorted(prices, key=lambda y: y[0])
         p = sorted_prices[0][0]
         print(sorted_prices)
