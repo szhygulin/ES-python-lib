@@ -73,9 +73,9 @@ def initiate():
             #print(res)
             time.sleep(sleep_time*3)
             print("Exchange instantiated")
-            command = """peer chaincode invoke -n EnergyAsset -v 0 -c '{"Args":["set", "central_company", "999999"]}' -C myc"""
+            command = """peer chaincode invoke -n EnergyAsset -v 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C myc"""
             x.exec_run(command)
-            command = """peer chaincode invoke -n USDAsset -v 0 -c '{"set", "Args":["central_company", "999999"]}' -C myc"""
+            command = """peer chaincode invoke -n USDAsset -v 0 -c '{"set", "Args":["centralCompany", "999999"]}' -C myc"""
             x.exec_run(command)
             time.sleep(sleep_time * 3)
             print("central company initiated")
@@ -218,8 +218,8 @@ def getOpenOrders():
 def buyFromCentralCompany(buyer_id, amount):
     print("cc_price", central_company_price[current_epoch])
     usd_amount = int(central_company_price[current_epoch]*amount)
-    trade("central_company", buyer_id, amount, usd_amount)
-    generateEnergy("central_company", amount)
+    trade("centralCompany", buyer_id, amount, usd_amount)
+    generateEnergy("centralCompany", amount)
 
 def buyWithMarketOrder(user_id, energy_amount):
     if open_orders == {}:
@@ -258,7 +258,7 @@ def nextEpoch():
 
 def test():
     setPriceLevel(1)
-    print(getUserBalances("central_company"))
+    print(getUserBalances("centralCompany"))
     setUserBalance("test1", "USDAsset", 10)
     setUserBalance("test2", "USDAsset", 10)
     setUserBalance("test3", "USDAsset", 100)
