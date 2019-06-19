@@ -198,13 +198,13 @@ class blockchain:
                     balances_return = {}
                     #print("usd_ids, energy_ids", usd_ids, energy_ids)
                     for x in usd_ids or x in energy_ids:
-                        balances_return[x] = self.getUserBalances(x)
+                        balances_return[x] = self.getUserBalances(x,self.current_epoch)
                     return balances_return
                 else:
                     print("trigger", epoch)
                     return self.balances[epoch]
 
-    def getCentralCompanyPrice(self, epoch=current_epoch):
+    def getCentralCompanyPrice(self, epoch):
         return self.central_company_price[epoch]
 
     def setPriceLevel(self, price):
@@ -255,7 +255,7 @@ class blockchain:
         time.sleep(self.sleep_time*3)
 
     def nextEpoch(self):
-        self.balances.append(self.getTotalBalances())
+        self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
 
