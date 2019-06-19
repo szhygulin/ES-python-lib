@@ -4,10 +4,9 @@ import re
 
 client = docker.from_env()
 containers = client.containers.list(all)
-global current_epoch
 current_epoch = 0
 balances = []
-sleep_time = 5
+sleep_time = 1
 central_company_price = [0]
 open_orders = {}
 
@@ -176,7 +175,7 @@ def getTotalBalances(epoch=current_epoch):
                     usd_ids_str = re.findall(regex, str(res.output))[0]
                     usd_ids = usd_ids_str.split("""\\\\\"""")
                     del usd_ids[::2]
-                    print(usd_ids)
+                    #print(usd_ids)
                 res = x.exec_run(command2)
                 #print(res.output)
                 if res.exit_code != 0:
@@ -185,7 +184,7 @@ def getTotalBalances(epoch=current_epoch):
                     energy_ids_str = re.findall(regex, str(res.output))[0]
                     energy_ids = energy_ids_str.split("""\\\\\"""")
                     del energy_ids[::2]
-                    print(energy_ids)
+                    #print(energy_ids)
                 balances_return = {}
                 for x in usd_ids or x in energy_ids:
                     balances_return[x] = getUserBalances(x)
@@ -221,7 +220,7 @@ def buyWithMarketOrder(user_id, energy_amount):
     p = sorted_prices[0][0]
     while p <= central_company_price[current_epoch] and energy_amount > 0:
         amount = min(energy_amount, open_orders[sorted_prices[1]][0])
-        energy_amount =- amount
+        energy_amount -= amount
         trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
         cancelOrder(sorted_prices[0][1])
         if amount < open_orders[sorted_prices[1]][0]:
@@ -233,6 +232,7 @@ def buyWithMarketOrder(user_id, energy_amount):
         buyFromCentralCompany(user_id, energy_amount)
 
 def nextEpoch():
+    global current_epoch
     balances.append(getTotalBalances())
     central_company_price.append(central_company_price[current_epoch])
     current_epoch += 1
