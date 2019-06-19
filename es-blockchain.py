@@ -71,8 +71,15 @@ def initiate():
             res = x.exec_run(command)
             #print("\n")
             #print(res)
-            time.sleep(sleep_time)
+            time.sleep(sleep_time*3)
             print("Exchange instantiated")
+            command = """peer chaincode invoke -n EnergyAsset -v 0 -c '{"Args":["set", "central_company", "999999"]}' -C myc"""
+            x.exec_run(command)
+            command = """peer chaincode invoke -n USDAsset -v 0 -c '{"set", "Args":["central_company", "999999"]}' -C myc"""
+            x.exec_run(command)
+            time.sleep(sleep_time * 3)
+            print("central company initiated")
+
 
 def setUserBalance(user_id, asset_name, amount=0):
     for x in containers:
