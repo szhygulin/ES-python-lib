@@ -257,6 +257,7 @@ def test():
     transferAsset("test2", "test1", "EnergyAsset", 3)
     print(getTotalBalances())
     nextEpoch()
+    print("current_epoch", current_epoch)
     setPriceLevel(2)
     print(getTotalBalances(0))
     openOrder("test2", 4, 4)
