@@ -75,10 +75,10 @@ def initiate():
             print("Exchange instantiated")
             command = """peer chaincode invoke -n EnergyAsset 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C myc"""
             res=x.exec_run(command)
-            print(res,"\n")
-            command = """peer chaincode invoke -n USDAsset 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C myc"""
+            #print(res,"\n")
+            command = """peer chaincode invoke -n USDAsset 0 -c '{"Args":["set", "centralCompany", "0"]}' -C myc"""
             res=x.exec_run(command)
-            print(res, "\n")
+            #print(res, "\n")
             time.sleep(sleep_time * 3)
             print("central company initiated")
 
