@@ -254,6 +254,7 @@ def test():
     print(getTotalBalances(0))
     openOrder("test2", 4, 4)
     openOrder("test1", 3, 6)
+    print(open_orders)
     buyWithMarketOrder("test3", 8)
     print(getTotalBalances())
 
