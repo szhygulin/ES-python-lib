@@ -188,7 +188,7 @@ def getTotalBalances(epoch=current_epoch):
                 balances_return = {}
                 for x in usd_ids or x in energy_ids:
                     balances_return[x] = getUserBalances(x)
-                return balances
+                return balances_return
             else:
                 return balances[epoch]
 
@@ -215,7 +215,7 @@ def buyFromCentralCompany(buyer_id, amount):
 def buyWithMarketOrder(user_id, energy_amount):
     prices = []
     for x in open_orders:
-        prices.append(open_orders[x][0] / open_orders[x][1], x)
+        prices.append([open_orders[x][0] / open_orders[x][1], x])
     sorted_prices = sorted(prices, key=lambda y: y[0])
     p = sorted_prices[0][0]
     while p <= central_company_price[current_epoch] and energy_amount > 0:
