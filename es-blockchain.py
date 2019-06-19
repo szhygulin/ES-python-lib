@@ -213,24 +213,30 @@ def buyFromCentralCompany(buyer_id, amount):
     generateEnergy("central_company", amount)
 
 def buyWithMarketOrder(user_id, energy_amount):
-    prices = []
-    for x in open_orders:
-        prices.append([open_orders[x][0] / open_orders[x][1], x])
-    sorted_prices = sorted(prices, key=lambda y: y[0])
-    p = sorted_prices[0][0]
-    while p <= central_company_price[current_epoch] and energy_amount > 0:
-        amount = min(energy_amount, open_orders[sorted_prices[0][1]][0])
-        energy_amount -= amount
-        trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
-        open_order_ene = open_orders[sorted_prices[0][1]][0]
-        cancelOrder(sorted_prices[0][1])
-        if amount < open_order_ene:
-            ene_to_sell = open_order_ene - amount
-            openOrder(sorted_prices[1], ene_to_sell, sorted_prices[0][0]*ene_to_sell)
-        del sorted_prices[0]
-        p = sorted_prices[0][0]
-    if energy_amount > 0:
+    if open_orders == {}:
         buyFromCentralCompany(user_id, energy_amount)
+    else:
+        prices = []
+        for x in open_orders:
+            prices.append([open_orders[x][0] / open_orders[x][1], x])
+        sorted_prices = sorted(prices, key=lambda y: y[0])
+        p = sorted_prices[0][0]
+        while p <= central_company_price[current_epoch] and energy_amount > 0:
+            amount = min(energy_amount, open_orders[sorted_prices[0][1]][0])
+            energy_amount -= amount
+            trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
+            open_order_ene = open_orders[sorted_prices[0][1]][0]
+            cancelOrder(sorted_prices[0][1])
+            if amount < open_order_ene:
+                ene_to_sell = open_order_ene - amount
+                openOrder(sorted_prices[1], ene_to_sell, sorted_prices[0][0]*ene_to_sell)
+            del sorted_prices[0]
+            if sorted_prices == []:
+                p = 9999999
+            else:
+                p = sorted_prices[0][0]
+        if energy_amount > 0:
+            buyFromCentralCompany(user_id, energy_amount)
 
 def nextEpoch():
     global current_epoch
