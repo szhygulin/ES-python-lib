@@ -221,15 +221,16 @@ def buyWithMarketOrder(user_id, energy_amount):
             prices.append([open_orders[x][0] / open_orders[x][1], x])
         sorted_prices = sorted(prices, key=lambda y: y[0])
         p = sorted_prices[0][0]
+        print(sorted_prices)
         while p <= central_company_price[current_epoch] and energy_amount > 0:
             amount = min(energy_amount, open_orders[sorted_prices[0][1]][0])
             energy_amount -= amount
-            trade(sorted_prices[0][1], user_id, amount, amount*sorted_prices[0][0])
+            trade(sorted_prices[0][1], user_id, amount, int(amount*sorted_prices[0][0]))
             open_order_ene = open_orders[sorted_prices[0][1]][0]
             cancelOrder(sorted_prices[0][1])
             if amount < open_order_ene:
                 ene_to_sell = open_order_ene - amount
-                openOrder(sorted_prices[1], ene_to_sell, sorted_prices[0][0]*ene_to_sell)
+                openOrder(sorted_prices[1], ene_to_sell, int(sorted_prices[0][0]*ene_to_sell))
             del sorted_prices[0]
             if sorted_prices == []:
                 p = 9999999
@@ -250,6 +251,7 @@ def test():
     setUserBalance("test2", "USDAsset", 10)
     setUserBalance("test3", "USDAsset", 100)
     setUserBalance("test2", "EnergyAsset", 10)
+    print(getTotalBalances())
     trade("test2", "test1", 1, 1)
     print(getTotalBalances())
     generateEnergy("test2", 20)
