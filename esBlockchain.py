@@ -16,70 +16,41 @@ class blockchain:
             if x.name == "chaincode":
                 command = """sh -c '''go build''' """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
-                #print("\n")
-                #print(res)
-                #time.sleep(10)
                 command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
-                #print("\n")
-                #print(res)
                 print("ES_dollar initiated")
                 command = """sh -c "go build" """
                 res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy")
-                #print("\n")
-                #print(res)
-                #time.sleep(10)
                 command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=EnergyAsset:0 ./es-energy" """
                 res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy", detach=True)
-                #print("\n")
-                #print(res)
                 print("ES_energy initiated")
                 command = """sh -c "go build" """
                 res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange")
-                #print("\n")
-                #print(res)
-                # time.sleep(10)
                 command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
                 res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
-                #print("\n")
-                #print(res)
                 print("ES_exchange initiated")
         for x in self.containers:
             if x.name == "cli":
                 command = """peer chaincode install -p chaincodedev/chaincode/es-dollar -n USDAsset -v 0"""
                 res=x.exec_run(command)
-                #print("\n")
-                #print(res)
                 command = """peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":[]}' -C myc"""
                 res=x.exec_run(command)
-                #print("\n")
-                #print(res)
                 print("USD asset instantiated")
                 command = """peer chaincode install -p chaincodedev/chaincode/es-energy -n EnergyAsset -v 0"""
                 res = x.exec_run(command)
-                #print("\n")
-                #print(res)
                 command = """peer chaincode instantiate -n EnergyAsset -v 0 -c '{"Args":[]}' -C myc"""
                 res = x.exec_run(command)
-                #print("\n")
-                #print(res)
                 print("Energy asset instantiated")
                 command = """peer chaincode install -p chaincodedev/chaincode/es-exchange -n Exchange -v 0"""
                 res = x.exec_run(command)
-                #print("\n")
-                #print(res)
                 command = """peer chaincode instantiate -n Exchange -v 0 -c '{"Args":[]}' -C myc"""
                 res = x.exec_run(command)
-                #print("\n")
-                #print(res)
                 time.sleep(self.sleep_time*3)
                 print("Exchange instantiated")
                 command = """peer chaincode invoke -n EnergyAsset 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C myc"""
                 res=x.exec_run(command)
-                #print(res,"\n")
                 command = """peer chaincode invoke -n USDAsset 0 -c '{"Args":["set", "centralCompany", "0"]}' -C myc"""
                 res=x.exec_run(command)
-                #print(res, "\n")
                 time.sleep(self.sleep_time * 3)
                 print("central company initiated")
 
@@ -94,8 +65,6 @@ class blockchain:
                 print(command)
                 res = x.exec_run(command)
                 time.sleep(2*self.sleep_time)
-                #print("\n")
-                #print(res)
 
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
         for x in self.containers:
@@ -105,8 +74,6 @@ class blockchain:
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
-                #print("\n")
-                #print(res)
 
     def trade(self, energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
         for x in self.containers:
@@ -116,9 +83,7 @@ class blockchain:
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
-                #print("\n")
                 time.sleep(2*self.sleep_time)
-                #print(res)
 
     def getUserBalances(self, user_id, epoch):
         for x in self.containers:
@@ -152,9 +117,7 @@ class blockchain:
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
-                #print("\n")
                 time.sleep(2 * self.sleep_time)
-                #print(res)
 
     def generateEnergy(self, user_id, amount):
         for x in self.containers:
@@ -164,9 +127,7 @@ class blockchain:
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
-                #print("\n")
                 time.sleep(2 * self.sleep_time)
-                #print(res)
 
     def getTotalBalances(self, epoch):
         for x in self.containers:
@@ -178,25 +139,20 @@ class blockchain:
                     print(command2)
                     regex = """result: status:200 payload:\".*\""""
                     res = x.exec_run(command1)
-                    #print(res.output)
                     if res.exit_code != 0:
                         usd_ids = []
                     else:
                         usd_ids_str = re.findall(regex, str(res.output))[0]
                         usd_ids = usd_ids_str.split("""\\\\\"""")
                         del usd_ids[::2]
-                        #print(usd_ids)
                     res = x.exec_run(command2)
-                    #print(res.output)
                     if res.exit_code != 0:
                         energy_ids = []
                     else:
                         energy_ids_str = re.findall(regex, str(res.output))[0]
                         energy_ids = energy_ids_str.split("""\\\\\"""")
                         del energy_ids[::2]
-                        #print(energy_ids)
                     balances_return = {}
-                    #print("usd_ids, energy_ids", usd_ids, energy_ids)
                     for x in usd_ids or x in energy_ids:
                         balances_return[x] = self.getUserBalances(x,self.current_epoch)
                     return balances_return
@@ -239,7 +195,6 @@ class blockchain:
                 amount = min(energy_amount, self.open_orders[sorted_prices[0][1]][0])
                 energy_amount -= amount
                 self.trade(sorted_prices[0][1], user_id, amount, int(amount*sorted_prices[0][0]))
-                #print(getTotalBalances())
                 open_order_ene = self.open_orders[sorted_prices[0][1]][0]
                 self.cancelOrder(sorted_prices[0][1])
                 if amount < open_order_ene:
