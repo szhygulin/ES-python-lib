@@ -1,21 +1,27 @@
 import docker
 import time
 import re
+import requests
+import json
+
 
 class blockchain:
     client = docker.from_env()
     containers = client.containers.list(all)
     current_epoch = 0
+    temp_data = {'current_epoch': current_epoch}
+    result = requests.post('http://127.0.0.1:8000', json=temp_data)
     balances = []
-    sleep_time = 2
+    sleep_time = 0.5
     central_company_price = [0]
     open_orders = {}
 
-    def __init__(self):
+    def setChaincodes(self):
         for x in self.containers:
             if x.name == "chaincode":
                 command = """sh -c '''go build''' """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
+                #print(res)
                 command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
                 print("ES_dollar initiated")
@@ -64,6 +70,7 @@ class blockchain:
                 command = a1 + a2 + a3
                 print(command)
                 res = x.exec_run(command)
+                #print(res)
                 time.sleep(2*self.sleep_time)
 
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
@@ -153,6 +160,7 @@ class blockchain:
                         energy_ids = energy_ids_str.split("""\\\\\"""")
                         del energy_ids[::2]
                     balances_return = {}
+                    print(usd_ids, energy_ids)
                     for x in usd_ids or x in energy_ids:
                         balances_return[x] = self.getUserBalances(x,self.current_epoch)
                     return balances_return
@@ -161,19 +169,48 @@ class blockchain:
                     return self.balances[epoch]
 
     def getCentralCompanyPrice(self, epoch):
-        return self.central_company_price[epoch]
+        #return self.central_company_price[epoch]
+        response = requests.get('http://127.0.0.1:8000', data="cc_price")
+        # print('getOpenOrders')
+        # print(response.status_code)
+        # print(response.content)
+        string = response.content.decode('utf-8')
+        json_obj = json.loads(string)
+        # print(json_obj)
+        return json_obj["cc_price"]
 
     def setPriceLevel(self, price):
+        data = {'cc_price': price}
+        print("setpricelevel")
+        result = requests.post('http://127.0.0.1:8000', json=data)
         self.central_company_price[self.current_epoch] = price
+        print(result)
 
     def openOrder(self, user_id, energy_amount, usd_amount):
-        self.open_orders[user_id] = [energy_amount, usd_amount]
+        data = {}
+        data["user_id"] = user_id
+        data["energy"] = energy_amount
+        data["usd"] = usd_amount
+        result = requests.post('http://127.0.0.1:8000', json=data)
+        #print(result.content)
+        #self.open_orders[user_id] = [energy_amount, usd_amount]
 
     def cancelOrder(self, user_id):
-        del self.open_orders[user_id]
+        data = {}
+        data["user_id"] = user_id
+        requests.delete('http://127.0.0.1:8000', json=data)
 
     def getOpenOrders(self):
-        return self.open_orders
+        response = requests.get('http://127.0.0.1:8000')
+        #print('getOpenOrders')
+        #print(response.status_code)
+        #print(response.content)
+        string = response.content.decode('utf-8')
+        print("string", string)
+        json_obj = json.loads(string)
+        #print(json_obj)
+        return json_obj['orders']
+        #return self.open_orders
 
     def buyFromCentralCompany(self, buyer_id, amount):
         print("cc_price", self.central_company_price[self.current_epoch])
@@ -182,6 +219,7 @@ class blockchain:
         self.generateEnergy("centralCompany", amount)
 
     def buyWithMarketOrder(self, user_id, energy_amount):
+        self.open_orders = self.getOpenOrders()
         if self.open_orders == {}:
             self.buyFromCentralCompany(user_id, energy_amount)
         else:
@@ -191,15 +229,22 @@ class blockchain:
             sorted_prices = sorted(prices, key=lambda y: y[0])
             p = sorted_prices[0][0]
             print(sorted_prices)
-            while p <= self.central_company_price[self.current_epoch] and energy_amount > 0:
+            while p < self.central_company_price[self.current_epoch] and energy_amount > 0:
+                #print('price', p)
+                #print('energy to buy', energy_amount)
                 amount = min(energy_amount, self.open_orders[sorted_prices[0][1]][0])
                 energy_amount -= amount
                 self.trade(sorted_prices[0][1], user_id, amount, int(amount*sorted_prices[0][0]))
                 open_order_ene = self.open_orders[sorted_prices[0][1]][0]
                 self.cancelOrder(sorted_prices[0][1])
+                ## open order with lover amount, if not fully fulfilled
+                self.open_orders = self.getOpenOrders()
+                #print(self.open_orders)
                 if amount < open_order_ene:
                     ene_to_sell = open_order_ene - amount
-                    self.openOrder(sorted_prices[1], ene_to_sell, int(sorted_prices[0][0]*ene_to_sell))
+                    self.openOrder(sorted_prices[0][1], ene_to_sell, int(sorted_prices[0][0]*ene_to_sell))
+                    self.open_orders=self.getOpenOrders()
+                #print(self.open_orders)
                 del sorted_prices[0]
                 if sorted_prices == []:
                     p = 9999999
@@ -213,6 +258,21 @@ class blockchain:
         self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
+        data = {'current_epoch': self.current_epoch}
+        print("setcurrentepoch, ", self.current_epoch)
+        result = requests.post('http://127.0.0.1:8000', json=data)
+
+    def getCurrentEpoch(self):
+        response = requests.get('http://127.0.0.1:8000')
+        # print('getOpenOrders')
+        # print(response.status_code)
+        # print(response.content)
+        string = response.content.decode('utf-8')
+        print("string", string)
+        json_obj = json.loads(string)
+        # print(json_obj)
+        return json_obj['current_epoch']
+        # return self.open_orders
 
     def test(self):
         self.setPriceLevel(1)
@@ -225,14 +285,16 @@ class blockchain:
         self.transferAsset("test2", "test1", "EnergyAsset", 3)
         print(self.getTotalBalances(epoch=self.current_epoch))
         self.nextEpoch()
+        print("Current_epoch", self.getCurrentEpoch())
         print("current_epoch", self.current_epoch)
         self.setPriceLevel(2)
         print(self.getTotalBalances(0))
         self.openOrder("test2", 4, 4)
         self.openOrder("test1", 3, 6)
-        print("open orders", self.open_orders)
+        #time.sleep(self.sleep_time * 3)
+        print("open orders", self.getOpenOrders())
         self.buyWithMarketOrder("test3", 8)
-        print("current_epoch", self.current_epoch)
+        print("Current_epoch", self.getCurrentEpoch())
         print("balances", self.balances)
         print(self.getTotalBalances(epoch=self.current_epoch))
         self.buyFromCentralCompany("test3", 3)
@@ -246,5 +308,9 @@ class blockchain:
 
 if __name__ == '__main__':
     bch=blockchain()
+    #bch.openOrder("test2", 4, 4)
+    #bch.openOrder("test1", 3, 6)
+    #print("open orders", bch.getOpenOrders())
+    bch.setChaincodes()
     bch.test()
-    bch.shutdown()
+    #bch.shutdown()
