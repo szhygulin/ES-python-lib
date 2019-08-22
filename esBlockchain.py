@@ -8,15 +8,18 @@ import json
 class blockchain:
     client = docker.from_env()
     containers = client.containers.list(all)
-    current_epoch = 0
-    temp_data = {'current_epoch': current_epoch}
-    result = requests.post('http://127.0.0.1:8000', json=temp_data)
     balances = []
     sleep_time = 0.5
     central_company_price = [0]
     open_orders = {}
 
+    def __init__(self, ip_address):
+        self.current_epoch = 0
+        self.ip_address = ip_address
+
     def setChaincodes(self):
+        temp_data = {'current_epoch': self.current_epoch}
+        result = requests.post('http://127.0.0.1:8000', json=temp_data)
         for x in self.containers:
             if x.name == "chaincode":
                 command = """sh -c '''go build''' """
@@ -170,7 +173,7 @@ class blockchain:
 
     def getCentralCompanyPrice(self, epoch):
         #return self.central_company_price[epoch]
-        response = requests.get('http://127.0.0.1:8000', data="cc_price")
+        response = requests.get(self.ip_address, data="cc_price")
         # print('getOpenOrders')
         # print(response.status_code)
         # print(response.content)
@@ -182,7 +185,7 @@ class blockchain:
     def setPriceLevel(self, price):
         data = {'cc_price': price}
         print("setpricelevel")
-        result = requests.post('http://127.0.0.1:8000', json=data)
+        result = requests.post(self.ip_address, json=data)
         self.central_company_price[self.current_epoch] = price
         print(result)
 
@@ -191,17 +194,17 @@ class blockchain:
         data["user_id"] = user_id
         data["energy"] = energy_amount
         data["usd"] = usd_amount
-        result = requests.post('http://127.0.0.1:8000', json=data)
+        result = requests.post(self.ip_address, json=data)
         #print(result.content)
         #self.open_orders[user_id] = [energy_amount, usd_amount]
 
     def cancelOrder(self, user_id):
         data = {}
         data["user_id"] = user_id
-        requests.delete('http://127.0.0.1:8000', json=data)
+        requests.delete(self.ip_address, json=data)
 
     def getOpenOrders(self):
-        response = requests.get('http://127.0.0.1:8000')
+        response = requests.get(self.ip_address)
         #print('getOpenOrders')
         #print(response.status_code)
         #print(response.content)
@@ -260,10 +263,10 @@ class blockchain:
         self.current_epoch += 1
         data = {'current_epoch': self.current_epoch}
         print("setcurrentepoch, ", self.current_epoch)
-        result = requests.post('http://127.0.0.1:8000', json=data)
+        result = requests.post(self.ip_address, json=data)
 
     def getCurrentEpoch(self):
-        response = requests.get('http://127.0.0.1:8000')
+        response = requests.get(self.ip_address)
         # print('getOpenOrders')
         # print(response.status_code)
         # print(response.content)
@@ -307,7 +310,7 @@ class blockchain:
 
 
 if __name__ == '__main__':
-    bch=blockchain()
+    bch=blockchain('http://127.0.0.1:8000')
     #bch.openOrder("test2", 4, 4)
     #bch.openOrder("test1", 3, 6)
     #print("open orders", bch.getOpenOrders())
