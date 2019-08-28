@@ -8,6 +8,8 @@ import json
 class blockchain:
     client = docker.from_env()
     containers = client.containers.list(all)
+    for x in containers:
+        print(x.name)
     balances = []
     sleep_time = 0.5
     central_company_price = [0]
@@ -21,10 +23,10 @@ class blockchain:
         temp_data = {'current_epoch': self.current_epoch}
         result = requests.post('http://127.0.0.1:8000', json=temp_data)
         for x in self.containers:
-            if x.name == "chaincode":
+            if x.name == "peer0.org1.example.com":
                 command = """sh -c '''go build''' """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
-                #print(res)
+                print(res)
                 command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
                 res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
                 print("ES_dollar initiated")
@@ -56,9 +58,13 @@ class blockchain:
                 res = x.exec_run(command)
                 time.sleep(self.sleep_time*3)
                 print("Exchange instantiated")
-                command = """peer chaincode invoke -n EnergyAsset 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C myc"""
+
+    def createCentralCompany(self):
+        for x in self.containers:
+            if x.name == "cli":
+                command = """peer chaincode invoke -n EnergyAsset 0 -c '{"Args":["set", "centralCompany", "999999"]}' -C mychannel"""
                 res=x.exec_run(command)
-                command = """peer chaincode invoke -n USDAsset 0 -c '{"Args":["set", "centralCompany", "0"]}' -C myc"""
+                command = """peer chaincode invoke -n USDAsset 0 -c '{"Args":["set", "centralCompany", "0"]}' -C mychannel"""
                 res=x.exec_run(command)
                 time.sleep(self.sleep_time * 3)
                 print("central company initiated")
@@ -69,18 +75,18 @@ class blockchain:
             if x.name == "cli":
                 a1 = """peer chaincode invoke -n """
                 a2 = asset_name + """ -c '{"Args":["set", \""""
-                a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
+                a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2 + a3
                 print(command)
                 res = x.exec_run(command)
-                #print(res)
+                print(res)
                 time.sleep(2*self.sleep_time)
 
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
         for x in self.containers:
             if x.name == "cli":
                 a1 = """peer chaincode invoke -n """ + asset_name + """ -c '{"Args":["send", \""""
-                a2 = sender_id + """\", \"""" + recipient_id + """\", \"""" + str(amount) + """\"]}' -C myc"""
+                a2 = sender_id + """\", \"""" + recipient_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
@@ -89,7 +95,7 @@ class blockchain:
         for x in self.containers:
             if x.name == "cli":
                 a1 = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
-                a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C myc"""
+                a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
@@ -99,8 +105,8 @@ class blockchain:
         for x in self.containers:
             if x.name == "cli":
                 if epoch == self.current_epoch:
-                    command1 = """peer chaincode query -n USDAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C myc"""
-                    command2 = """peer chaincode query -n EnergyAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C myc"""
+                    command1 = """peer chaincode query -n USDAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C mychannel"""
+                    command2 = """peer chaincode query -n EnergyAsset -c '{"Args":["query",\"""" + user_id + """\"]}' -C mychannel"""
                     print(command1)
                     print(command2)
                     res = x.exec_run(command1)
@@ -123,7 +129,7 @@ class blockchain:
         for x in self.containers:
             if x.name == "cli":
                 a1 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["burn", \"""" + user_id + """\", \""""
-                a2 = str(amount) + """\"]}' -C myc"""
+                a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
@@ -133,7 +139,7 @@ class blockchain:
         for x in self.containers:
             if x.name == "cli":
                 a1 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["generate", \"""" + user_id + """\", \""""
-                a2 = str(amount) + """\"]}' -C myc"""
+                a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 print(command)
                 res = x.exec_run(command)
@@ -143,8 +149,8 @@ class blockchain:
         for x in self.containers:
             if x.name == "cli":
                 if epoch == self.current_epoch:
-                    command1 = """peer chaincode invoke -n USDAsset -c '{"Args":["keys"]}' -C myc"""
-                    command2 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["keys"]}' -C myc"""
+                    command1 = """peer chaincode invoke -n USDAsset -c '{"Args":["keys"]}' -C mychannel"""
+                    command2 = """peer chaincode invoke -n EnergyAsset -c '{"Args":["keys"]}' -C mychannel"""
                     print(command1)
                     print(command2)
                     regex = """result: status:200 payload:\".*\""""
@@ -314,6 +320,7 @@ if __name__ == '__main__':
     #bch.openOrder("test2", 4, 4)
     #bch.openOrder("test1", 3, 6)
     #print("open orders", bch.getOpenOrders())
-    bch.setChaincodes()
+    #bch.setChaincodes()
+    bch.createCentralCompany()
     bch.test()
     #bch.shutdown()
