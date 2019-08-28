@@ -3,15 +3,17 @@
 import math
 import random
 import timeit
-from esPythonLib import esBlockchain as bch
+import esBlockchain as bch
+import time
 #import numpy as np
 #from numpy import genfromtxt
 #import matplotlib.pyplot as plt
 
-blockchain = bch.blockchain()
+blockchain = bch.blockchain("http://0.0.0.0:8000")
 start = timeit.default_timer()
 
 Policy=1
+type = "master"
 
 Ite=100
 Ite_Percent=0.8
@@ -135,7 +137,8 @@ User_Buy=[[0 for j in T] for i in I]
 if Policy==1:
     R_1=R_0
     for c in I:
-    	blockchain.setUserBalance("ui%d" %c,"EnergyAsset",R_1[c])
+        blockchain.setUserBalance("ui%d" %c,"EnergyAsset",R_1[c])
+        blockchain.setUserBalance("ui%d" %c,"USDAsset", 1000000)
     Mark=[0 for i in I]
     Rest1=[[1000000  for t in T] for i in I]
 
@@ -145,20 +148,33 @@ if Policy==1:
             if Rest1[i][t]<=0:
                 User_Buy[i][t]=-Rest1[i][t]
                 User_Sell[i][t]=0
-                ## BuyWithMarketUser
             elif Rest1[i][t]>=Capacityi[i]:
                 User_Sell[i][t]=Rest1[i][t]-Capacityi[i]
                 User_Buy[i][t]=0
-        ##switch to the next epoch   
-        #--------------------------------------------------        
-        #Use BlockChain functions to calculate the transaction at time t
-        #---------------------------------------------------------------
-
-    #     #R_1[i]=Rest power of user i after time t
-
-    #     for i in I:
-    #         R_1[i]=#Result from blockchain
-    
+        user_buy = []
+        for i in I:
+            blockchain.generateEnergy("ui%d" %i, G[i][t])
+            if User_Sell[i][t]>0:
+                blockchain.openOrder("ui%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
+            else:
+                user_buy.append(i)
+        random.shuffle(user_buy)
+        for i in user_buy:
+            blockchain.buyWithMarketOrder("ui%d" %i, User_Buy[i][t])
+        for i in I:
+            blockchain.burnEnergy("ui%d" %i, D[i][t])
+        if type == "master":
+            votes = 0
+            while votes < 2:
+                blockchain.getNextEpochVotes()
+                time.sleep(1)
+            blockchain.nextEpoch()
+        elif type == "slave":
+            blockchain.voteNextEpoch()
+            epoch = blockchain.getCurrentEpoch()
+            while epoch < blockchain.current_epoch:
+                time.sleep(2)
+                epoch = blockchain.getCurrentEpoch()
     
 #Policy 2
 if Policy==2:
@@ -166,10 +182,8 @@ if Policy==2:
     Mark=[0 for i in I]
     Rest2=[[[10000 for k in T] for t in T] for i in I]
     for t in T:
-
         for i in I:
             for k in range(t,Num_T):
-
                 Rest2[i][t][k]=R_1[i]+G[i][k]-D[i][k]
                 if Rest2[i][t][k]<=0 and k==t:
                     User_Buy[i][t]=-Rest2[i][t][k]
@@ -186,21 +200,28 @@ if Policy==2:
                     User_Sell[i][t]=0
                     Mark[i]=1
                     break
-
-
-
-
                 elif Rest2[i][t][k]>=Capacityi[i] and k!=t:
                     R_1[i]=Capacityi[i]
-
             if Mark[i]==0 and min(Rest2[i][t])>=0:
                 User_Sell[i][t]=min(Rest2[i][t])
                 User_Buy[i][t]=0
             elif Mark[i]==0:
                 User_Sell[i][t]=0
                 User_Buy[i][t]=0
+        user_buy = []
+        for i in I:
+            blockchain.generateEnergy("ui%d" % i, G[i][t])
+            if User_Sell[i][t] > 0:
+                blockchain.openOrder("ui%d" % i, User_Sell[i][t], LB_p[i] * User_Sell[i][t])
+            else:
+                user_buy.append(i)
+        random.shuffle(user_buy)
+        for i in user_buy:
+            blockchain.buyWithMarketOrder("ui%d" % i, User_Buy[i][t])
+        for i in I:
+            blockchain.burnEnergy("ui%d" % i, D[i][t])
 
-        #--------------------------------------------------        
+        #--------------------------------------------------
         #Use BlockChain functions to calculate the transaction at time t
         #---------------------------------------------------------------
 
@@ -208,16 +229,6 @@ if Policy==2:
 
     #     for i in I:
     #         R_1[i]=#Result from blockchain
-            
-                
-
-                
-
-
-                
-
-
-
 # for i in I:
 #     print(sum(G[i][j] for j in T))
 # print("----------------------")

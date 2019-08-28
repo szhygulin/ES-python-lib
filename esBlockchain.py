@@ -11,7 +11,7 @@ class blockchain:
     for x in containers:
         print(x.name)
     balances = []
-    sleep_time = 0.5
+    sleep_time = 0.005
     central_company_price = [0]
     open_orders = {}
 
@@ -263,14 +263,6 @@ class blockchain:
                 self.buyFromCentralCompany(user_id, energy_amount)
         time.sleep(self.sleep_time*3)
 
-    def nextEpoch(self):
-        self.balances.append(self.getTotalBalances(self.current_epoch))
-        self.central_company_price.append(self.central_company_price[self.current_epoch])
-        self.current_epoch += 1
-        data = {'current_epoch': self.current_epoch}
-        print("setcurrentepoch, ", self.current_epoch)
-        result = requests.post(self.ip_address, json=data)
-
     def getCurrentEpoch(self):
         response = requests.get(self.ip_address)
         # print('getOpenOrders')
@@ -282,6 +274,33 @@ class blockchain:
         # print(json_obj)
         return json_obj['current_epoch']
         # return self.open_orders
+
+    def voteNextEpoch(self):
+        self.balances.append(self.getTotalBalances(self.current_epoch))
+        self.central_company_price.append(self.central_company_price[self.current_epoch])
+        self.current_epoch += 1
+        data = {'current_epoch_vote': self.current_epoch}
+        print("votecurrentepoch, ", self.current_epoch)
+        result = requests.post(self.ip_address, json=data)
+
+    def getNextEpochVotes(self):
+        response = requests.get(self.ip_address)
+        # print('getOpenOrders')
+        # print(response.status_code)
+        # print(response.content)
+        string = response.content.decode('utf-8')
+        #print("string", string)
+        json_obj = json.loads(string)
+        # print(json_obj)
+        return json_obj['current_epoch_votes']
+
+    def nextEpoch(self):
+        self.balances.append(self.getTotalBalances(self.current_epoch))
+        self.central_company_price.append(self.central_company_price[self.current_epoch])
+        self.current_epoch += 1
+        data = {'current_epoch': self.current_epoch}
+        print("setcurrentepoch, ", self.current_epoch)
+        result = requests.post(self.ip_address, json=data)
 
     def test(self):
         self.setPriceLevel(1)
