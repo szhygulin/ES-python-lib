@@ -135,10 +135,12 @@ User_Buy=[[0 for j in T] for i in I]
 
 #Policy 1
 if Policy==1:
+    blockchain.setPriceLevel(10)
+    blockchain.getCurrentEpoch()
     R_1=R_0
     for c in I:
-        blockchain.setUserBalance("ui%d" %c,"EnergyAsset",R_1[c])
-        blockchain.setUserBalance("ui%d" %c,"USDAsset", 1000000)
+        blockchain.setUserBalance("u0i%d" %c,"EnergyAsset",R_1[c])
+        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 1000000)
     Mark=[0 for i in I]
     Rest1=[[1000000  for t in T] for i in I]
 
@@ -152,29 +154,38 @@ if Policy==1:
                 User_Sell[i][t]=Rest1[i][t]-Capacityi[i]
                 User_Buy[i][t]=0
         user_buy = []
+        print("data for epoch %d generated" %blockchain.current_epoch)
         for i in I:
-            blockchain.generateEnergy("ui%d" %i, G[i][t])
+            blockchain.generateEnergy("u0i%d" %i, G[i][t])
             if User_Sell[i][t]>0:
-                blockchain.openOrder("ui%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
+                blockchain.openOrder("u0i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
             else:
                 user_buy.append(i)
+        print("energy generated, orders are opened")
         random.shuffle(user_buy)
         for i in user_buy:
-            blockchain.buyWithMarketOrder("ui%d" %i, User_Buy[i][t])
+            blockchain.buyWithMarketOrder("u0i%d" %i, User_Buy[i][t])
+        print("Buy orders executed")
         for i in I:
-            blockchain.burnEnergy("ui%d" %i, D[i][t])
+            blockchain.burnEnergy("u0i%d" %i, D[i][t])
+        print("Energy burned")
         if type == "master":
-            votes = 0
+            votes = blockchain.getNextEpochVotes()
             while votes < 2:
-                blockchain.getNextEpochVotes()
-                time.sleep(1)
+                votes = blockchain.getNextEpochVotes()
+                print("votes", votes)
+                time.sleep(5)
+                print("wait other users to finish epoch")
+            print("switching to the next epoch")
             blockchain.nextEpoch()
+            print("new epoch is %d" %blockchain.getCurrentEpoch())
         elif type == "slave":
             blockchain.voteNextEpoch()
             epoch = blockchain.getCurrentEpoch()
             while epoch < blockchain.current_epoch:
-                time.sleep(2)
+                time.sleep(5)
                 epoch = blockchain.getCurrentEpoch()
+        print("Epoch switched")
     
 #Policy 2
 if Policy==2:
