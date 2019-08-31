@@ -14,14 +14,16 @@ class blockchain:
     sleep_time = 0.005
     central_company_price = [0]
     open_orders = {}
+    current_epoch = 0
 
     def __init__(self, ip_address):
         self.current_epoch = 0
         self.ip_address = ip_address
 
-    def setChaincodes(self):
+    def buildChaincodes(self):
         temp_data = {'current_epoch': self.current_epoch}
         result = requests.post(self.ip_address, json=temp_data)
+<<<<<<< HEAD
         #for x in self.containers:
         #    if x.name == "peer0.org1.example.com":
         #        command = """sh -c '''go build''' """
@@ -40,24 +42,65 @@ class blockchain:
         #        command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
         #        res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
         #        print("ES_exchange initiated")
+=======
+        for x in self.containers:
+            if x.name == "orderer.example.com":
+                command = """sh -c '''go build''' """
+                res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
+                #print(res)
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
+                res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
+                #print(res)
+                print("ES_dollar initiated")
+                command = """sh -c "go build" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy")
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=EnergyAsset:0 ./es-energy" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy", detach=True)
+                print("ES_energy initiated")
+                command = """sh -c "go build" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange")
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
+                print("ES_exchange initiated")
+
+    def setChaincodes(self):
+        temp_data = {'current_epoch': self.current_epoch}
+        result = requests.post(self.ip_address, json=temp_data)
+>>>>>>> 719775e7e83c585fcd5d26ccc6bd8aabc5261f5f
         for x in self.containers:
             if x.name == "cli":
                 command = """peer chaincode install -p chaincode/go/es-dollar -n USDAsset -v 0"""
                 res=x.exec_run(command)
                 print(res)
+<<<<<<< HEAD
                 command = """peer chaincode instantiate -n USDAsset -v 0 -c '{"Args":[]}' -C mychannel"""
+=======
+                command = """peer chaincode instantiate -o orderer.example.com:7050 -n USDAsset -v 0 -c '{"Args":[]}' -C mychannel"""
+>>>>>>> 719775e7e83c585fcd5d26ccc6bd8aabc5261f5f
                 res=x.exec_run(command)
                 print(res)
                 print("USD asset instantiated")
                 command = """peer chaincode install -p chaincode/go/es-energy -n EnergyAsset -v 0"""
                 res = x.exec_run(command)
+<<<<<<< HEAD
                 command = """peer chaincode instantiate -n EnergyAsset -v 0 -c '{"Args":[]}' -C mychannel"""
+=======
+                print(res)
+                command = """peer chaincode instantiate -o orderer.example.com:7050 -n EnergyAsset -v 0 -c '{"Args":[]}' -C mychannel"""
+>>>>>>> 719775e7e83c585fcd5d26ccc6bd8aabc5261f5f
                 res = x.exec_run(command)
+                print(res)
                 print("Energy asset instantiated")
                 command = """peer chaincode install -p chaincode/go/es-exchange -n Exchange -v 0"""
                 res = x.exec_run(command)
+<<<<<<< HEAD
                 command = """peer chaincode instantiate -n Exchange -v 0 -c '{"Args":[]}' -C mychannel"""
+=======
+                print(res)
+                command = """peer chaincode instantiate -o orderer.example.com:7050 -n Exchange -v 0 -c '{"Args":[]}' -C mychannel"""
+>>>>>>> 719775e7e83c585fcd5d26ccc6bd8aabc5261f5f
                 res = x.exec_run(command)
+                print(res)
                 time.sleep(self.sleep_time*3)
                 print("Exchange instantiated")
 
@@ -274,7 +317,7 @@ class blockchain:
         string = response.content.decode('utf-8')
         #print("string", string)
         json_obj = json.loads(string)
-        # print(json_obj)
+        print(json_obj)
         return json_obj['current_epoch']
         # return self.open_orders
 
@@ -343,6 +386,10 @@ if __name__ == '__main__':
     #bch.openOrder("test1", 3, 6)
     #print("open orders", bch.getOpenOrders())
     bch.setChaincodes()
+<<<<<<< HEAD
     #bch.createCentralCompany()
+=======
+    bch.createCentralCompany()
+>>>>>>> 719775e7e83c585fcd5d26ccc6bd8aabc5261f5f
     bch.test()
     #bch.shutdown()
