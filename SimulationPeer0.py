@@ -140,7 +140,7 @@ if Policy==1:
     R_1=R_0
     for c in I:
         blockchain.setUserBalance("u0i%d" %c,"EnergyAsset",R_1[c])
-        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 1000000)
+        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 10000)
     Mark=[0 for i in I]
     Rest1=[[1000000  for t in T] for i in I]
 
@@ -167,7 +167,13 @@ if Policy==1:
             blockchain.buyWithMarketOrder("u0i%d" %i, User_Buy[i][t])
         print("Buy orders executed")
         for i in I:
-            blockchain.burnEnergy("u0i%d" %i, D[i][t])
+            energy_left = blockchain.getUserBalances("u0i%d" %i)[1]
+            if energy_left < Capacityi[i] + D[i][t]:
+                blockchain.burnEnergy("u0i%d" %i, D[i][t])
+                R_1[i] = energy_left - D[i][t]
+            else:
+                blockchain.burnEnergy("u0i%d" %i, D[i][t] + energy_left - Capacityi[i])
+                R_1[i] = Capacityi[i]
         print("Energy burned")
         if type == "master":
             votes = blockchain.getNextEpochVotes()
