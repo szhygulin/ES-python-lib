@@ -138,8 +138,8 @@ if Policy==1:
     R_1=R_0
     blockchain.getCurrentEpoch()
     for c in I:
-        blockchain.setUserBalance("u1i%d" %c,"EnergyAsset",R_1[c])
-        blockchain.setUserBalance("u1i%d" %c,"USDAsset", 1000000)
+        blockchain.setUserBalance("u2i%d" %c,"EnergyAsset",R_1[c])
+        blockchain.setUserBalance("u2i%d" %c,"USDAsset", 1000000)
     Mark=[0 for i in I]
     Rest1=[[1000000  for t in T] for i in I]
 
@@ -155,23 +155,23 @@ if Policy==1:
         user_buy = []
         print("data for epoch %d generated" %blockchain.current_epoch)
         for i in I:
-            blockchain.generateEnergy("u1i%d" %i, G[i][t])
+            blockchain.generateEnergy("u2i%d" %i, G[i][t])
             if User_Sell[i][t]>0:
-                blockchain.openOrder("u1i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
+                blockchain.openOrder("u2i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
             else:
                 user_buy.append(i)
         print("energy generated, sell orders opened")
         random.shuffle(user_buy)
         for i in user_buy:
-            blockchain.buyWithMarketOrder("u1i%d" %i, User_Buy[i][t])
+            blockchain.buyWithMarketOrder("u2i%d" %i, User_Buy[i][t])
         print("buy orders executed")
         for i in I:
-            energy_left = blockchain.getUserBalances("u1i%d" %i)[1]
+            energy_left = blockchain.getUserBalances("u2i%d" %i)[1]
             if energy_left < Capacityi[i] + D[i][t]:
-                blockchain.burnEnergy("u1i%d" %i, D[i][t])
+                blockchain.burnEnergy("u2i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
             else:
-                blockchain.burnEnergy("u1i%d" %i, D[i][t] + energy_left - Capac$
+                blockchain.burnEnergy("u2i%d" %i, D[i][t] + energy_left - Capac$
                 R_1[i] = Capacityi[i]
         print("Energy burned")
         if type == "master":
