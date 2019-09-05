@@ -198,6 +198,7 @@ class blockchain:
         string = response.content.decode('utf-8')
         json_obj = json.loads(string)
         # print(json_obj)
+        self.central_company_price[self.current_epoch] = json_obj["cc_price"]
         return json_obj["cc_price"]
 
     def setPriceLevel(self, price):
@@ -291,6 +292,7 @@ class blockchain:
         self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
+        self.getCentralCompanyPrice(self.current_epoch)
         data = {'current_epoch_votes': self.current_epoch}
         print("votecurrentepoch, ", self.current_epoch)
         result = requests.post(self.ip_address, json=data)
@@ -310,6 +312,7 @@ class blockchain:
         self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
+        self.getCentralCompanyPrice(self.current_epoch)
         data = {'current_epoch': self.current_epoch}
         print("setcurrentepoch, ", self.current_epoch)
         result = requests.post(self.ip_address, json=data)
@@ -352,6 +355,6 @@ if __name__ == '__main__':
     #bch.openOrder("test1", 3, 6)
     #print("open orders", bch.getOpenOrders())
     bch.setChaincodes()
-    bch.createCentralCompany()
-    bch.test()
+    #bch.createCentralCompany()
+    #bch.test()
     #bch.shutdown()
