@@ -12,7 +12,7 @@ import time
 blockchain = bch.blockchain("http://0.0.0.0:8000")
 blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
-blockchain.setPriceLevel(10)
+blockchain.setPriceLevel(200)
 Policy=2
 type = "master"
 
@@ -141,7 +141,7 @@ if Policy==1:
     R_1=R_0
     for c in I:
         blockchain.setUserBalance("u0i%d" %c,"EnergyAsset",R_1[c])
-        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 10000)
+        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 100000000)
     Mark=[0 for i in I]
     Rest1=[[1000000  for t in T] for i in I]
 
@@ -176,6 +176,8 @@ if Policy==1:
                 blockchain.burnEnergy("u0i%d" %i, D[i][t] + energy_left - Capacityi[i])
                 R_1[i] = Capacityi[i]
         print("Energy burned")
+        for i in I:
+            blockchain.cancelOrder("u0i%d" %i)
         if type == "master":
             votes = blockchain.getNextEpochVotes()
             while votes < 2:
@@ -197,6 +199,9 @@ if Policy==1:
 #Policy 2
 if Policy==2:
     R_1=R_0
+    for c in I:
+        blockchain.setUserBalance("u0i%d" %c,"EnergyAsset", R_1[c])
+        blockchain.setUserBalance("u0i%d" %c,"USDAsset", 100000000)
     Mark=[0 for i in I]
     Rest2=[[[10000 for k in T] for t in T] for i in I]
     for t in T:

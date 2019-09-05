@@ -186,7 +186,7 @@ class blockchain:
                     print(balances_return)
                     return balances_return
                 else:
-                    #print("trigger", epoch)
+                    print("trigger", epoch)
                     return self.balances[epoch]
 
     def getCentralCompanyPrice(self, epoch):
@@ -198,9 +198,10 @@ class blockchain:
         string = response.content.decode('utf-8')
         json_obj = json.loads(string)
         self.central_company_price[self.current_epoch] = json_obj["cc_price"]
-        # print(json_obj)
-        self.central_company_price[self.current_epoch] = json_obj["cc_price"]
-        return json_obj["cc_price"]
+        if epoch == self.current_epoch:
+            return json_obj["cc_price"]
+        else:
+            return self.central_company_price[epoch]
 
     def setPriceLevel(self, price):
         data = {'cc_price': price}

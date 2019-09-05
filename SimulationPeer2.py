@@ -195,6 +195,9 @@ if Policy==1:
 #Policy 2
 if Policy==2:
     R_1=R_0
+    for c in I:
+        blockchain.setUserBalance("u2i%d" %c,"EnergyAsset", R_1[c])
+        blockchain.setUserBalance("u2i%d" %c,"USDAsset", 100000000)
     Mark=[0 for i in I]
     Rest2=[[[10000 for k in T] for t in T] for i in I]
     for t in T:
@@ -247,6 +250,8 @@ if Policy==2:
                 blockchain.burnEnergy("u2i%d" %i, D[i][t] + energy_left - Capacity[i])
                 R_1[i] = Capacityi[i]
         print("Energy burned")
+        for i in I:
+            blockchain.cancelOrder("u2i%d" %i)
         if type == "master":
             votes = 0
             while votes < 2:
