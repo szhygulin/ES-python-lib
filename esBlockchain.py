@@ -197,6 +197,7 @@ class blockchain:
         # print(response.content)
         string = response.content.decode('utf-8')
         json_obj = json.loads(string)
+        self.central_company_price[self.current_epoch] = json_obj["cc_price"]
         # print(json_obj)
         self.central_company_price[self.current_epoch] = json_obj["cc_price"]
         return json_obj["cc_price"]
