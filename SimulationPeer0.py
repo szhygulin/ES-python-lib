@@ -10,9 +10,10 @@ import time
 #import matplotlib.pyplot as plt
 
 blockchain = bch.blockchain("http://0.0.0.0:8000")
+blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
-
-Policy=1
+blockchain.setPriceLevel(10)
+Policy=2
 type = "master"
 
 Ite=100
@@ -135,8 +136,8 @@ User_Buy=[[0 for j in T] for i in I]
 
 #Policy 1
 if Policy==1:
-    blockchain.setPriceLevel(10)
-    blockchain.getCurrentEpoch()
+    #blockchain.setPriceLevel(10)
+    #blockchain.getCurrentEpoch()
     R_1=R_0
     for c in I:
         blockchain.setUserBalance("u0i%d" %c,"EnergyAsset",R_1[c])
@@ -167,7 +168,7 @@ if Policy==1:
             blockchain.buyWithMarketOrder("u0i%d" %i, User_Buy[i][t])
         print("Buy orders executed")
         for i in I:
-            energy_left = blockchain.getUserBalances("u0i%d" %i)[1]
+            energy_left = blockchain.getUserBalances("u0i%d" %i, blockchain.current_epoch)[1]
             if energy_left < Capacityi[i] + D[i][t]:
                 blockchain.burnEnergy("u0i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
@@ -226,17 +227,44 @@ if Policy==2:
                 User_Sell[i][t]=0
                 User_Buy[i][t]=0
         user_buy = []
+        print("data for epoch %d generated" %blockchain.current_epoch)
         for i in I:
-            blockchain.generateEnergy("ui%d" % i, G[i][t])
-            if User_Sell[i][t] > 0:
-                blockchain.openOrder("ui%d" % i, User_Sell[i][t], LB_p[i] * User_Sell[i][t])
+            blockchain.generateEnergy("u0i%d" %i, G[i][t])
+            if User_Sell[i][t]>0:
+                blockchain.openOrder("u0i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
             else:
                 user_buy.append(i)
+        print("energy generated, orders are opened")
         random.shuffle(user_buy)
         for i in user_buy:
-            blockchain.buyWithMarketOrder("ui%d" % i, User_Buy[i][t])
+            blockchain.buyWithMarketOrder("u0i%d" %i, User_Buy[i][t])
+        print("Buy orders executed")
         for i in I:
-            blockchain.burnEnergy("ui%d" % i, D[i][t])
+            energy_left = blockchain.getUserBalances("u0i%d" %i, blockchain.current_epoch)[1]
+            if energy_left < Capacityi[i] + D[i][t]:
+                blockchain.burnEnergy("u0i%d" %i, D[i][t])
+                R_1[i] = energy_left - D[i][t]
+            else:
+                blockchain.burnEnergy("u0i%d" %i, D[i][t] + energy_left - Capacityi[i])
+                R_1[i] = Capacityi[i]
+        print("Energy burned")
+        if type == "master":
+            votes = blockchain.getNextEpochVotes()
+            while votes < 2:
+                votes = blockchain.getNextEpochVotes()
+                print("votes", votes)
+                time.sleep(5)
+                print("wait other users to finish epoch")
+            print("switching to the next epoch")
+            blockchain.nextEpoch()
+            print("new epoch is %d" %blockchain.getCurrentEpoch())
+        elif type == "slave":
+            blockchain.voteNextEpoch()
+            epoch = blockchain.getCurrentEpoch()
+            while epoch < blockchain.current_epoch:
+                time.sleep(5)
+                epoch = blockchain.getCurrentEpoch()
+        print("Epoch switched")
 
         #--------------------------------------------------
         #Use BlockChain functions to calculate the transaction at time t
