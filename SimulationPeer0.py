@@ -255,11 +255,12 @@ if Policy==2:
         print("Energy burned")
         if type == "master":
             votes = blockchain.getNextEpochVotes()
+            print("wait other users to finish epoch")
             while votes < 2:
                 votes = blockchain.getNextEpochVotes()
-                print("votes", votes)
+                #print("votes", votes)
                 time.sleep(5)
-                print("wait other users to finish epoch")
+                #print("wait other users to finish epoch")
             print("switching to the next epoch")
             blockchain.nextEpoch()
             print("new epoch is %d" %blockchain.getCurrentEpoch())

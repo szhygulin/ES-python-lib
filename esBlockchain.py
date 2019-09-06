@@ -23,24 +23,24 @@ class blockchain:
     def buildChaincodes(self):
         temp_data = {'current_epoch': self.current_epoch}
         result = requests.post(self.ip_address, json=temp_data)
-        #for x in self.containers:
-        #    if x.name == "peer0.org1.example.com":
-        #        command = """sh -c '''go build''' """
-        #        res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
-        #        print(res)
-        #        command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
-        #        res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
-        #        print("ES_dollar initiated")
-        #        command = """sh -c "go build" """
-        #        res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy")
-        #        command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=EnergyAsset:0 ./es-energy" """
-        #        res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy", detach=True)
-        #        print("ES_energy initiated")
-        #        command = """sh -c "go build" """
-        #        res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange")
-        #        command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
-        #        res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
-        #        print("ES_exchange initiated")
+        for x in self.containers:
+            if x.name == "peer0.org1.example.com":
+                command = """sh -c '''go build''' """
+                res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar")
+                print(res)
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=USDAsset:0 ./es-dollar" """
+                res=x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-dollar", detach=True)
+                print("ES_dollar initiated")
+                command = """sh -c "go build" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy")
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=EnergyAsset:0 ./es-energy" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-energy", detach=True)
+                print("ES_energy initiated")
+                command = """sh -c "go build" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange")
+                command = """sh -c "CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=Exchange:0 ./es-exchange" """
+                res = x.exec_run(command, workdir="/opt/gopath/src/chaincode/es-exchange", detach=True)
+                print("ES_exchange initiated")
 
     def setChaincodes(self):
         temp_data = {'current_epoch': self.current_epoch}
@@ -88,9 +88,9 @@ class blockchain:
                 a2 = asset_name + """ -c '{"Args":["set", \""""
                 a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2 + a3
-                #print(command)
+                print(command)
                 res = x.exec_run(command)
-                #print(res)
+                print(res)
                 time.sleep(2*self.sleep_time)
 
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
@@ -108,8 +108,9 @@ class blockchain:
                 a1 = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
-                #print(command)
+                print(command)
                 res = x.exec_run(command)
+                print(res)
                 time.sleep(2*self.sleep_time)
 
     def getUserBalances(self, user_id, epoch):
@@ -286,7 +287,7 @@ class blockchain:
         string = response.content.decode('utf-8')
         #print("string", string)
         json_obj = json.loads(string)
-        print(json_obj)
+        #print(json_obj)
         return json_obj['current_epoch']
         # return self.open_orders
 
@@ -356,6 +357,7 @@ if __name__ == '__main__':
     #bch.openOrder("test2", 4, 4)
     #bch.openOrder("test1", 3, 6)
     #print("open orders", bch.getOpenOrders())
+    #bch.buildChaincodes()
     bch.setChaincodes()
     bch.createCentralCompany()
     #bch.createCentralCompany()
