@@ -286,7 +286,7 @@ class blockchain:
         string = response.content.decode('utf-8')
         #print("string", string)
         json_obj = json.loads(string)
-        print(json_obj)
+        #print(json_obj)
         return json_obj['current_epoch']
         # return self.open_orders
 
