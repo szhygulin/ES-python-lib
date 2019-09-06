@@ -263,9 +263,10 @@ if Policy==2:
             blockchain.voteNextEpoch()
             print("which is %d" %blockchain.current_epoch)
             epoch = blockchain.getCurrentEpoch()
+            print("wait master, his epoch is %d" %epoch)
             while epoch < blockchain.current_epoch:
                 time.sleep(5)
-                print("wait master, his epoch is %d" %epoch)
+                #print("wait master, his epoch is %d" %epoch)
                 epoch = blockchain.getCurrentEpoch()
             print("epoch switched")
 
