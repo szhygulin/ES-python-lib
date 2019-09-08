@@ -61,10 +61,10 @@ class blockchain:
                 res = x.exec_run(command)
                 print(res)
                 print("Energy asset instantiated")
-                command = """peer chaincode install -p chaincode/go/es-exchange -n Exchange -v 0"""
+                command = """peer chaincode install -p chaincode/go/es-exchange -n Exchange2 -v 0"""
                 res = x.exec_run(command)
                 print(res)
-                command = """peer chaincode instantiate -o orderer.example.com:7050 -n Exchange -v 0 -c '{"Args":[]}' -C mychannel"""
+                command = """peer chaincode instantiate -o orderer.example.com:7050 -n Exchange2 -v 0 -c '{"Args":[]}' -C mychannel"""
                 res = x.exec_run(command)
                 print(res)
                 time.sleep(self.sleep_time*3)
@@ -88,9 +88,9 @@ class blockchain:
                 a2 = asset_name + """ -c '{"Args":["set", \""""
                 a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2 + a3
-                print(command)
+                #print(command)
                 res = x.exec_run(command)
-                print(res)
+                #print(res)
                 time.sleep(2*self.sleep_time)
 
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
@@ -108,9 +108,11 @@ class blockchain:
                 a1 = """peer chaincode invoke -n Exchange2 -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
-                print(command)
+                #print(command)
                 res = x.exec_run(command)
-                print(res)
+                #print(res)
+                print("Trade: user %s sell %d energy for %d usd to user %s" % energy_seller_id, energy_amount,
+                      usd_amount, energy_buyer_id)
                 time.sleep(2*self.sleep_time)
 
     def getUserBalances(self, user_id, epoch):
@@ -259,9 +261,9 @@ class blockchain:
                 #print('energy to buy', energy_amount)
                 amount = min(energy_amount, self.open_orders[sorted_prices[0][1]][0])
                 energy_amount -= amount
-                self.trade(sorted_prices[0][1], user_id, amount, int(amount*sorted_prices[0][0]))
                 open_order_ene = self.open_orders[sorted_prices[0][1]][0]
                 self.cancelOrder(sorted_prices[0][1])
+                self.trade(sorted_prices[0][1], user_id, amount, int(amount * sorted_prices[0][0]))
                 ## open order with lover amount, if not fully fulfilled
                 self.open_orders = self.getOpenOrders()
                 #print(self.open_orders)
