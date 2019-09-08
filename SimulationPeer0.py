@@ -12,7 +12,7 @@ import time
 blockchain = bch.blockchain("http://0.0.0.0:8000")
 blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
-blockchain.setPriceLevel(200)
+blockchain.setPriceLevel(130)
 Policy=2
 type = "master"
 
