@@ -105,7 +105,7 @@ class blockchain:
     def trade(self, energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
         for x in self.containers:
             if x.name == "cli":
-                a1 = """peer chaincode invoke -n Exchange -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
+                a1 = """peer chaincode invoke -n Exchange2 -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 print(command)
