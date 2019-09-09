@@ -301,3 +301,4 @@ print("User_Buy is", User_Buy)
     
 end = timeit.default_timer()
 print ("Total Time Spend is", end - start)
+print(blockchain.transactions)

@@ -15,6 +15,7 @@ class blockchain:
     central_company_price = [0]
     open_orders = {}
     current_epoch = 0
+    transactions = []
 
     def __init__(self, ip_address):
         self.current_epoch = 0
@@ -113,6 +114,7 @@ class blockchain:
                 #print(res)
                 print("<<< Trade: user %s sell %d energy for %d usd to user %s" % (energy_seller_id, energy_amount,
                       usd_amount, energy_buyer_id))
+                self.transactions.append([self.current_epoch, energy_seller_id, energy_buyer_id, energy_amount, usd_amount])
                 time.sleep(2*self.sleep_time)
 
     def getUserBalances(self, user_id, epoch):
@@ -244,7 +246,7 @@ class blockchain:
         usd_amount = int(self.central_company_price[self.current_epoch]*amount)
         self.trade("centralCompany", buyer_id, amount, usd_amount)
         self.generateEnergy("centralCompany", amount)
-        print("<<< CC Trade: user %s bought %d" % (buyer_id, amount))
+        #print("<<< CC Trade: user %s bought %d" % (buyer_id, amount))
 
     def buyWithMarketOrder(self, user_id, energy_amount):
         self.open_orders = self.getOpenOrders()

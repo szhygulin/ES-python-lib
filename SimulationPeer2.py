@@ -22,7 +22,7 @@ OBJ_Value=[[0 for i in range(int(Ite_Percent*Ite))] for j in range(2)]
 
 
 
-random.seed(a=2)
+random.seed(a=3)
 
 #No. of Customers and time periods
 Num_N=10
@@ -301,3 +301,4 @@ print("User_Buy is", User_Buy)
     
 end = timeit.default_timer()
 print ("Total Time Spend is", end - start)
+print(blockchain.transactions)
