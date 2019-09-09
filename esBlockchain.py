@@ -11,7 +11,7 @@ class blockchain:
     for x in containers:
         print(x.name)
     balances = []
-    sleep_time = 0.005
+    sleep_time = 0.1
     central_company_price = [0]
     open_orders = {}
     current_epoch = 0
