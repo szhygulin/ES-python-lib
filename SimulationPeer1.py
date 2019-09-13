@@ -385,4 +385,9 @@ for day in days:
         G[i] = G[i] + noise
         noise = np.random.normal(0, 10, len(T)).astype(int)
         D[i] = D[i] + noise
+        for t in T:
+            if G[i][t] < 0:
+                G[i][t] = 0
+            if D[i][t] < 0:
+                D[i][t] = 0
     ## R_1 - rest from the previous day, already maintained
