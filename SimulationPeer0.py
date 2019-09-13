@@ -216,6 +216,8 @@ R_1 = R_0
 for c in I:
     blockchain.setUserBalance("u0i%d" % c, "EnergyAsset", R_1[c])
     blockchain.setUserBalance("u0i%d" % c, "USDAsset", 100000000)
+G = np.array(G)
+D = np.array(D)
 
 for day in days:
     #Policy 1
@@ -381,10 +383,9 @@ for day in days:
     print("Total Time Spend is", end - start)
     print(blockchain.transactions)
 
-    ## white noise added:
     for i in I:
-        noise = int(np.random.normal(0, 100, len(T)))
+        noise = np.random.normal(0, 100, len(T)).astype(int)
         G[i] = G[i] + noise
-        noise = int(np.random.normal(0, 100, len(T)))
+        noise = np.random.normal(0, 100, len(T)).astype(int)
         D[i] = D[i] + noise
     ## R_1 - rest from the previous day, already maintained

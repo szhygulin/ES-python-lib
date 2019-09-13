@@ -5,6 +5,7 @@ import random
 import timeit
 import esBlockchain as bch
 import time
+import numpy as np
 #import numpy as np
 #from numpy import genfromtxt
 #import matplotlib.pyplot as plt
@@ -214,6 +215,8 @@ R_1 = R_0
 for c in I:
     blockchain.setUserBalance("u1i%d" % c, "EnergyAsset", R_1[c])
     blockchain.setUserBalance("u1i%d" % c, "USDAsset", 100000000)
+G = np.array(G)
+D = np.array(D)
 
 for day in days:
     #Policy 1
@@ -378,8 +381,8 @@ for day in days:
     print(blockchain.transactions)
     ## white noise added:
     for i in I:
-        noise = int(np.random.normal(0, 100, len(T)))
+        noise = np.random.normal(0, 100, len(T)).astype(int)
         G[i] = G[i] + noise
-        noise = int(np.random.normal(0, 100, len(T)))
+        noise = np.random.normal(0, 100, len(T)).astype(int)
         D[i] = D[i] + noise
     ## R_1 - rest from the previous day, already maintained
