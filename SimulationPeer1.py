@@ -381,8 +381,8 @@ for day in days:
     print(blockchain.transactions)
     ## white noise added:
     for i in I:
-        noise = np.random.normal(0, 100, len(T)).astype(int)
+        noise = np.random.normal(0, 10, len(T)).astype(int)
         G[i] = G[i] + noise
-        noise = np.random.normal(0, 100, len(T)).astype(int)
+        noise = np.random.normal(0, 10, len(T)).astype(int)
         D[i] = D[i] + noise
     ## R_1 - rest from the previous day, already maintained
