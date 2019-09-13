@@ -247,7 +247,7 @@ if Policy==2:
                 blockchain.burnEnergy("u1i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
             else:
-                blockchain.burnEnergy("u1i%d" %i, D[i][t] + energy_left - Capacity[i])
+                blockchain.burnEnergy("u1i%d" %i, D[i][t] + energy_left - Capacityi[i])
                 R_1[i] = Capacityi[i]
         print("Energy burned")
         for i in I:
