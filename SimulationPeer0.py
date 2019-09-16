@@ -6,7 +6,7 @@ import timeit
 import esBlockchain as bch
 import time
 import numpy as np
-import simulationLib as simlib
+
 #import numpy as np
 #from numpy import genfromtxt
 #import matplotlib.pyplot as plt
@@ -216,10 +216,8 @@ R_1 = R_0
 for c in I:
     blockchain.setUserBalance("u0i%d" % c, "EnergyAsset", R_1[c])
     blockchain.setUserBalance("u0i%d" % c, "USDAsset", 100000000)
-G = np.array(G)
-D = np.array(D)
 
-for day in days:
+for day in range(days):
     #Policy 1
     if Policy==1:
         #blockchain.setPriceLevel(10)
@@ -382,7 +380,8 @@ for day in days:
     end = timeit.default_timer()
     print("Total Time Spend is", end - start)
     print(blockchain.transactions)
-
+    G = np.array(G)
+    D = np.array(D)
     for i in I:
         noise = np.random.normal(0, 10, len(T)).astype(int)
         G[i] = G[i] + noise
@@ -393,4 +392,6 @@ for day in days:
                 G[i][t] = 0
             if D[i][t] < 0:
                 D[i][t] = 0
+    G = G.tolist()
+    D = D.tolist()
     ## R_1 - rest from the previous day, already maintained
