@@ -13,7 +13,7 @@ blockchain = bch.blockchain("http://0.0.0.0:8000")
 blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
 blockchain.setPriceLevel(130)
-Policy=1
+Policy=2
 type = "master"
 
 Ite=100
@@ -111,7 +111,7 @@ Inital_Percent=0.1
 R_0=[0 for i in I]
 for i in I:
     R_0[i]=int(random.uniform(0,Inital_Percent*Capacityi[i]))
-
+print("rest", R_0)
 #Customer selling pirce of user i
 Customer_Sell_Price_LB=1
 Customer_Sell_Price_UB=1.5
@@ -198,7 +198,7 @@ if Policy==1:
     
 #Policy 2
 if Policy==2:
-    R_1=R_0
+    R_1=R_0.copy()
     for c in I:
         blockchain.setUserBalance("u0i%d" %c,"EnergyAsset", R_1[c])
         blockchain.setUserBalance("u0i%d" %c,"USDAsset", 100000000)
@@ -271,6 +271,7 @@ if Policy==2:
                 time.sleep(5)
                 epoch = blockchain.getCurrentEpoch()
         print("Epoch switched")
+        print("rests:", R_0, R_1)
 
         #--------------------------------------------------
         #Use BlockChain functions to calculate the transaction at time t
@@ -293,6 +294,7 @@ if Policy==2:
 
     
 print("Rest amount from yestarday is",R_0)
+print("Rest amount in the end is", R_1)
 # print("Selling price for users is",LB_p)
 # print("Battery capacity is ",Capacityi)
 print("Generation amount is", G)

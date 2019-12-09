@@ -194,7 +194,7 @@ if Policy==1:
     
 #Policy 2
 if Policy==2:
-    R_1=R_0
+    R_1=R_0.copy()
     for c in I:
         blockchain.setUserBalance("u2i%d" %c,"EnergyAsset", R_1[c])
         blockchain.setUserBalance("u2i%d" %c,"USDAsset", 100000000)

@@ -6,6 +6,7 @@
       <change beforePath="$PROJECT_DIR$/SimulationPeer0.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimulationPeer1.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimulationPeer2.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/esBlockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/esBlockchain.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,5 +140,23 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1377" height="187" key="GridCell.Tab.0.bottom" timestamp="1575928252203">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state width="1377" height="187" key="GridCell.Tab.0.bottom/67.27.1533.873@67.27.1533.873" timestamp="1575928252203" />
+    <state width="1377" height="187" key="GridCell.Tab.0.center" timestamp="1575928252202">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state width="1377" height="187" key="GridCell.Tab.0.center/67.27.1533.873@67.27.1533.873" timestamp="1575928252202" />
+    <state width="1377" height="187" key="GridCell.Tab.0.left" timestamp="1575928252202">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state width="1377" height="187" key="GridCell.Tab.0.left/67.27.1533.873@67.27.1533.873" timestamp="1575928252202" />
+    <state width="1377" height="187" key="GridCell.Tab.0.right" timestamp="1575928252203">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state width="1377" height="187" key="GridCell.Tab.0.right/67.27.1533.873@67.27.1533.873" timestamp="1575928252203" />
   </component>
 </project>
