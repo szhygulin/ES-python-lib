@@ -25,7 +25,7 @@ OBJ_Value=[[0 for i in range(int(Ite_Percent*Ite))] for j in range(2)]
 random.seed(a=2)
 
 #No. of Customers and time periods
-Num_N=10
+Num_N=4
 Num_T=12
 
 I=[i for i in range(Num_N)]
