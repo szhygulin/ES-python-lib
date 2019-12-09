@@ -13,7 +13,7 @@ blockchain = bch.blockchain("http://10.42.0.1:8000")
 blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
 blockchain.getCurrentEpoch()
-Policy=2
+Policy=1
 type = "slave"
 
 Ite=100
@@ -25,7 +25,7 @@ OBJ_Value=[[0 for i in range(int(Ite_Percent*Ite))] for j in range(2)]
 random.seed(a=2)
 
 #No. of Customers and time periods
-Num_N=10
+Num_N=4
 Num_T=12
 
 I=[i for i in range(Num_N)]
