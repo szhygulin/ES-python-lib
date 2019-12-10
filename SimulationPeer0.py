@@ -206,7 +206,7 @@ if Policy==2:
     Rest2=[[[10000 for k in T] for t in T] for i in I]
     for t in T:
         for i in I:
-            for k in range(t,Num_T):
+            for k in range(t,Num_T):  ##Num_T - total number of time steps
                 Rest2[i][t][k]=R_1[i]+G[i][k]-D[i][k]
                 if Rest2[i][t][k]<=0 and k==t:
                     User_Buy[i][t]=-Rest2[i][t][k]
@@ -237,7 +237,7 @@ if Policy==2:
             blockchain.generateEnergy("u0i%d" %i, G[i][t])
             if User_Sell[i][t]>0:
                 blockchain.openOrder("u0i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
-            else:
+            elif User_Buy[i][t]>0:
                 user_buy.append(i)
         print("energy generated, orders are opened")
         random.shuffle(user_buy)
@@ -250,7 +250,7 @@ if Policy==2:
                 blockchain.burnEnergy("u0i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
             else:
-                blockchain.burnEnergy("u0i%d" %i, D[i][t] + energy_left - Capacityi[i])
+                blockchain.burnEnergy("u0i%d" %i, energy_left - Capacityi[i])
                 R_1[i] = Capacityi[i]
         print("Energy burned")
         if type == "master":

@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/SimulationPeer0.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimulationPeer1.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimulationPeer2.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulationPeer2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/esBlockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/esBlockchain.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +24,11 @@
   </component>
   <component name="ProjectId" id="1Pk10PZIUQu73GcdfKXH1bhIpHy" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
@@ -158,5 +162,9 @@
       <screen x="67" y="27" width="1533" height="873" />
     </state>
     <state width="1377" height="187" key="GridCell.Tab.0.right/67.27.1533.873@67.27.1533.873" timestamp="1575928252203" />
+    <state x="556" y="283" key="com.intellij.ide.util.TipDialog" timestamp="1576001510059">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="556" y="283" key="com.intellij.ide.util.TipDialog/67.27.1533.873@67.27.1533.873" timestamp="1576001510059" />
   </component>
 </project>
