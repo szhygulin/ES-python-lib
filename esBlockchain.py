@@ -317,6 +317,10 @@ class blockchain:
         return json_obj['current_epoch_votes']
 
     def nextEpoch(self):
+        temp = self.getOpenOrders()
+        for x in temp:
+            print("deleteing order", x, temp[x])
+            self.cancelOrder(x)
         self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
