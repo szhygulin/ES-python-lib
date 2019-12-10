@@ -159,7 +159,7 @@ if Policy==1:
             blockchain.generateEnergy("u2i%d" %i, G[i][t])
             if User_Sell[i][t]>0:
                 blockchain.openOrder("u2i%d" %i, User_Sell[i][t], LB_p[i]*User_Sell[i][t])
-            else:
+            elif User_Buy[i][t]>0:
                 user_buy.append(i)
         print("energy generated, sell orders opened")
         random.shuffle(user_buy)
@@ -172,7 +172,7 @@ if Policy==1:
                 blockchain.burnEnergy("u2i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
             else:
-                blockchain.burnEnergy("u2i%d" %i, D[i][t] + energy_left - Capacityi[i])
+                blockchain.burnEnergy("u2i%d" %i, energy_left - Capacityi[i])
                 R_1[i] = Capacityi[i]
         print("Energy burned")
         if type == "master":
@@ -194,7 +194,7 @@ if Policy==1:
     
 #Policy 2
 if Policy==2:
-    R_1=R_0
+    R_1=R_0.copy()
     for c in I:
         blockchain.setUserBalance("u2i%d" %c,"EnergyAsset", R_1[c])
         blockchain.setUserBalance("u2i%d" %c,"USDAsset", 100000000)
