@@ -13,7 +13,7 @@ blockchain = bch.blockchain("http://10.42.0.1:8000")
 blockchain.getCentralCompanyPrice(blockchain.current_epoch)
 start = timeit.default_timer()
 blockchain.getCurrentEpoch()
-Policy=1
+Policy=2
 type = "slave"
 
 Ite=100
