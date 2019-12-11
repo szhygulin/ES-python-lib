@@ -106,14 +106,18 @@ class blockchain:
     def trade(self, energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
         for x in self.containers:
             if x.name == "cli":
+                a = self.getUserBalances(energy_buyer_id, self.current_epoch)
                 a1 = """peer chaincode invoke -n Exchange2 -c '{"Args":["exchange", \"""" + energy_buyer_id + """\", \""""
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
                 res = x.exec_run(command)
-                #print(res)
                 print("<<< Trade: user %s sell %d energy for %d usd to user %s" % (energy_seller_id, energy_amount,
                       usd_amount, energy_buyer_id))
+                #print(res)
+                time.sleep(5)
+                if a==self.getUserBalances(energy_buyer_id, self.current_epoch):
+                    res = x.exec_run(command)
                 self.transactions.append([self.current_epoch, energy_seller_id, energy_buyer_id, energy_amount, usd_amount])
                 time.sleep(2*self.sleep_time)
 

@@ -243,9 +243,11 @@ if Policy==2:
         random.shuffle(user_buy)
         for i in user_buy:
             blockchain.buyWithMarketOrder("u0i%d" %i, User_Buy[i][t])
+            #time.sleep(5)
         print("Buy orders executed")
         for i in I:
             energy_left = blockchain.getUserBalances("u0i%d" %i, blockchain.current_epoch)[1]
+            #print("u0i%d " %i, "enrgy left", energy_left)
             if energy_left < Capacityi[i] + D[i][t]:
                 blockchain.burnEnergy("u0i%d" %i, D[i][t])
                 R_1[i] = energy_left - D[i][t]
