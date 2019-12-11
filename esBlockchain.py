@@ -116,7 +116,7 @@ class blockchain:
                       usd_amount, energy_buyer_id))
                 #print(res)
                 time.sleep(5)
-                if a==self.getUserBalances(energy_buyer_id, self.current_epoch):
+                while a==self.getUserBalances(energy_buyer_id, self.current_epoch):
                     res = x.exec_run(command)
                 self.transactions.append([self.current_epoch, energy_seller_id, energy_buyer_id, energy_amount, usd_amount])
                 time.sleep(2*self.sleep_time)
