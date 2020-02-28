@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd7a835b-90c7-4092-ba10-add67ab5a506" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/convertList2Matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/convertList2Matrix.py" afterDir="false" />
     </list>
@@ -34,7 +33,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.data">
+  <component name="RunManager" selected="Python.convertList2Matrix">
     <configuration name="Simulation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ES-python-lib" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,8 +141,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.data" />
         <item itemvalue="Python.convertList2Matrix" />
+        <item itemvalue="Python.data" />
         <item itemvalue="Python.Simulation" />
         <item itemvalue="Python.esBlockchain" />
         <item itemvalue="Python.es-blockchain" />
@@ -189,21 +188,25 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1377" height="187" key="GridCell.Tab.0.bottom" timestamp="1575868346138">
+    <state width="1377" height="190" key="GridCell.Tab.0.bottom" timestamp="1576120079407">
       <screen x="67" y="27" width="1533" height="873" />
     </state>
-    <state width="1377" height="187" key="GridCell.Tab.0.bottom/67.27.1533.873@67.27.1533.873" timestamp="1575868346138" />
-    <state width="1377" height="187" key="GridCell.Tab.0.center" timestamp="1575868346137">
+    <state width="1377" height="190" key="GridCell.Tab.0.bottom/67.27.1533.873@67.27.1533.873" timestamp="1576120079407" />
+    <state width="1377" height="190" key="GridCell.Tab.0.center" timestamp="1576120079406">
       <screen x="67" y="27" width="1533" height="873" />
     </state>
-    <state width="1377" height="187" key="GridCell.Tab.0.center/67.27.1533.873@67.27.1533.873" timestamp="1575868346137" />
-    <state width="1377" height="187" key="GridCell.Tab.0.left" timestamp="1575868346135">
+    <state width="1377" height="190" key="GridCell.Tab.0.center/67.27.1533.873@67.27.1533.873" timestamp="1576120079406" />
+    <state width="1377" height="190" key="GridCell.Tab.0.left" timestamp="1576120079406">
       <screen x="67" y="27" width="1533" height="873" />
     </state>
-    <state width="1377" height="187" key="GridCell.Tab.0.left/67.27.1533.873@67.27.1533.873" timestamp="1575868346135" />
-    <state width="1377" height="187" key="GridCell.Tab.0.right" timestamp="1575868346137">
+    <state width="1377" height="190" key="GridCell.Tab.0.left/67.27.1533.873@67.27.1533.873" timestamp="1576120079406" />
+    <state width="1377" height="190" key="GridCell.Tab.0.right" timestamp="1576120079406">
       <screen x="67" y="27" width="1533" height="873" />
     </state>
-    <state width="1377" height="187" key="GridCell.Tab.0.right/67.27.1533.873@67.27.1533.873" timestamp="1575868346137" />
+    <state width="1377" height="190" key="GridCell.Tab.0.right/67.27.1533.873@67.27.1533.873" timestamp="1576120079406" />
+    <state x="556" y="276" key="com.intellij.ide.util.TipDialog" timestamp="1577979350989">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="556" y="276" key="com.intellij.ide.util.TipDialog/67.27.1533.873@67.27.1533.873" timestamp="1577979350989" />
   </component>
 </project>

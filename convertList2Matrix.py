@@ -16,7 +16,7 @@ def tranasctions2matrices(transactions, N, T):
     return matrix_E, matrix_D
 
 transactions = []
-with open('list2.txt', 'r') as f:
+with open('list.txt', 'r') as f:
     for cnt, line in enumerate(f):
         mylist = ast.literal_eval(line)
         transactions.append(mylist)
