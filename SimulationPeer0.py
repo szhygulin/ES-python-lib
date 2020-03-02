@@ -6,6 +6,7 @@ import timeit
 import esBlockchain as bch
 import time
 import numpy as np
+import datetime
 
 #import numpy as np
 #from numpy import genfromtxt
@@ -330,6 +331,7 @@ for day in range(days):
                     R_1[i] = Capacityi[i]
             print("Energy burned")
             if type == "master":
+                print("epoch time:", datetime.datetime.now(datetime.timezone.utc) - blockchain.epoch_start_time)
                 votes = blockchain.getNextEpochVotes()
                 print("wait other users to finish epoch")
                 while votes < 2:

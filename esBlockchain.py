@@ -3,6 +3,7 @@ import time
 import re
 import requests
 import json
+import datetime
 
 
 class blockchain:
@@ -16,6 +17,12 @@ class blockchain:
     open_orders = {}
     current_epoch = 0
     transactions = []
+    elem_transactions = 0
+    serv_transactions = 0
+    epoch_start_time = 0
+    latencies = []
+    statuses = []
+    txs = 0
 
     def __init__(self, ip_address):
         self.current_epoch = 0
@@ -81,19 +88,27 @@ class blockchain:
                 time.sleep(self.sleep_time * 3)
                 print("central company initiated")
 
-
+    ## contain elementary operation
     def setUserBalance(self, user_id, asset_name, amount=0):
         for x in self.containers:
             if x.name == "cli":
+                self.epoch_start_time = datetime.datetime.now(datetime.timezone.utc)
                 a1 = """peer chaincode invoke -n """
                 a2 = asset_name + """ -c '{"Args":["set", \""""
                 a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2 + a3
                 #print(command)
+                start = datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
+                end = datetime.now(datetime.timezone.utc)
+                self.latencies.append(end-start)
+                self.statuses.append(res.exit_code)
+                self.txs += 1
+                self.elem_transactions += 1
                 #print(res)
                 time.sleep(2*self.sleep_time)
 
+    ## contain elementary operation
     def transferAsset(self, sender_id, recipient_id, asset_name, amount):
         for x in self.containers:
             if x.name == "cli":
@@ -101,8 +116,15 @@ class blockchain:
                 a2 = sender_id + """\", \"""" + recipient_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
+                start = datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
+                end = datetime.now(datetime.timezone.utc)
+                self.latencies.append(end - start)
+                self.statuses.append(res.exit_code)
+                self.txs += 1
+                self.elem_transactions += 1
 
+    ## contain elementary operation
     def trade(self, energy_seller_id, energy_buyer_id, energy_amount, usd_amount):
         for x in self.containers:
             if x.name == "cli":
@@ -110,11 +132,17 @@ class blockchain:
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
+                start = datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
+                end = datetime.now(datetime.timezone.utc)
+                self.latencies.append(end - start)
+                self.statuses.append(res.exit_code)
+                self.txs += 1
                 #print(res)
                 print("<<< Trade: user %s sell %d energy for %d usd to user %s" % (energy_seller_id, energy_amount,
                       usd_amount, energy_buyer_id))
                 self.transactions.append([self.current_epoch, energy_seller_id, energy_buyer_id, energy_amount, usd_amount])
+                self.elem_transactions += 1
                 time.sleep(2*self.sleep_time)
 
     def getUserBalances(self, user_id, epoch):
@@ -141,6 +169,7 @@ class blockchain:
                 else:
                     return self.balances[epoch][user_id]
 
+    ## contain elementary operation
     def burnEnergy(self, user_id, amount):
         for x in self.containers:
             if x.name == "cli":
@@ -148,9 +177,16 @@ class blockchain:
                 a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
+                start = datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
+                end = datetime.now(datetime.timezone.utc)
+                self.latencies.append(end - start)
+                self.statuses.append(res.exit_code)
+                self.txs += 1
+                self.elem_transactions += 1
                 time.sleep(2 * self.sleep_time)
 
+    ## contain elementary operation
     def generateEnergy(self, user_id, amount):
         for x in self.containers:
             if x.name == "cli":
@@ -158,7 +194,13 @@ class blockchain:
                 a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
+                start = datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
+                end = datetime.now(datetime.timezone.utc)
+                self.latencies.append(end - start)
+                self.statuses.append(res.exit_code)
+                self.txs += 1
+                self.elem_transactions += 1
                 time.sleep(2 * self.sleep_time)
 
     def getTotalBalances(self, epoch):
@@ -212,6 +254,7 @@ class blockchain:
         data = {'cc_price': price}
         print("setpricelevel")
         result = requests.post(self.ip_address, json=data)
+        self.serv_transactions += 1
         self.central_company_price[self.current_epoch] = price
         #print(result)
 
@@ -221,6 +264,7 @@ class blockchain:
         data["energy"] = energy_amount
         data["usd"] = usd_amount
         result = requests.post(self.ip_address, json=data)
+        self.serv_transactions += 1
         #print(result.content)
         #self.open_orders[user_id] = [energy_amount, usd_amount]
 
@@ -228,6 +272,7 @@ class blockchain:
         data = {}
         data["user_id"] = user_id
         requests.delete(self.ip_address, json=data)
+        self.serv_transactions += 1
 
     def getOpenOrders(self):
         response = requests.get(self.ip_address)
@@ -297,6 +342,7 @@ class blockchain:
         # return self.open_orders
 
     def voteNextEpoch(self):
+        print("epoch time:", datetime.datetime.now(datetime.timezone.utc) - blockchain.epoch_start_time)
         self.balances.append(self.getTotalBalances(self.current_epoch))
         self.central_company_price.append(self.central_company_price[self.current_epoch])
         self.current_epoch += 1
@@ -324,7 +370,17 @@ class blockchain:
         data = {'current_epoch': self.current_epoch}
         print("setcurrentepoch, ", self.current_epoch)
         result = requests.post(self.ip_address, json=data)
-
+        print("server transactions: ", self.serv_transactions)
+        print("blockchain transactions: ", self.elem_transactions)
+        self.elem_transactions = 0
+        self.serv_transactions = 0
+        self.epoch_start_time = datetime.datetime.now(datetime.timezone.utc)
+        print("latencies:", self.latencies)
+        print("statuses:", self.statuses)
+        self.statuses = []
+        self.latencies = []
+        self.txs = 0
+        
     def test(self):
         self.setPriceLevel(1)
         print(self.getUserBalances("centralCompany", epoch=self.current_epoch))
