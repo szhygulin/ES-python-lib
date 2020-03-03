@@ -98,9 +98,9 @@ class blockchain:
                 a3 = user_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2 + a3
                 #print(command)
-                start = datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
-                end = datetime.now(datetime.timezone.utc)
+                end = datetime.datetime.now(datetime.timezone.utc)
                 self.latencies.append(end-start)
                 self.statuses.append(res.exit_code)
                 self.txs += 1
@@ -116,9 +116,9 @@ class blockchain:
                 a2 = sender_id + """\", \"""" + recipient_id + """\", \"""" + str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
-                start = datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
-                end = datetime.now(datetime.timezone.utc)
+                end = datetime.datetime.now(datetime.timezone.utc)
                 self.latencies.append(end - start)
                 self.statuses.append(res.exit_code)
                 self.txs += 1
@@ -132,9 +132,9 @@ class blockchain:
                 a2 = str(usd_amount) + """\", \"""" + energy_seller_id + """\", \"""" + str(energy_amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
-                start = datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
-                end = datetime.now(datetime.timezone.utc)
+                end = datetime.datetime.now(datetime.timezone.utc)
                 self.latencies.append(end - start)
                 self.statuses.append(res.exit_code)
                 self.txs += 1
@@ -177,9 +177,9 @@ class blockchain:
                 a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
-                start = datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
-                end = datetime.now(datetime.timezone.utc)
+                end = datetime.datetime.now(datetime.timezone.utc)
                 self.latencies.append(end - start)
                 self.statuses.append(res.exit_code)
                 self.txs += 1
@@ -194,9 +194,9 @@ class blockchain:
                 a2 = str(amount) + """\"]}' -C mychannel"""
                 command = a1 + a2
                 #print(command)
-                start = datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.now(datetime.timezone.utc)
                 res = x.exec_run(command)
-                end = datetime.now(datetime.timezone.utc)
+                end = datetime.datetime.now(datetime.timezone.utc)
                 self.latencies.append(end - start)
                 self.statuses.append(res.exit_code)
                 self.txs += 1
@@ -380,7 +380,7 @@ class blockchain:
         self.statuses = []
         self.latencies = []
         self.txs = 0
-        
+
     def test(self):
         self.setPriceLevel(1)
         print(self.getUserBalances("centralCompany", epoch=self.current_epoch))
