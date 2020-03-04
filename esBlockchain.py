@@ -321,6 +321,10 @@ class blockchain:
                     self.open_orders=self.getOpenOrders()
                 #print(self.open_orders)
                 del sorted_prices[0]
+                prices = []
+                for x in self.open_orders:
+                    prices.append([self.open_orders[x][1] / self.open_orders[x][0], x])
+                sorted_prices = sorted(prices, key=lambda y: y[0])
                 if sorted_prices == []:
                     p = 9999999
                 else:
